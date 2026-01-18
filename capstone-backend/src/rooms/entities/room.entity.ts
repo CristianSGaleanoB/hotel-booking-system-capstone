@@ -3,10 +3,11 @@ import { Document, Types } from 'mongoose';
 import { Hotel } from '../../hotels/entities/hotel.entity';
 
 export enum RoomType {
-  SINGLE = 'SINGLE',
-  DOUBLE = 'DOUBLE',
-  SUITE = 'SUITE',
-  DELUXE = 'DELUXE',
+  SIMPLE_SINGLE = 'SIMPLE_SINGLE',
+  SIMPLE_DOUBLE = 'SIMPLE_DOUBLE',
+  SIMPLE_TRIPLE = 'SIMPLE_TRIPLE',
+  SUITE_DOUBLE = 'SUITE_DOUBLE',
+  SUITE_FAMILY = 'SUITE_FAMILY',
 }
 
 @Schema({ timestamps: true })
@@ -17,7 +18,7 @@ export class Room extends Document {
   @Prop({ required: true })
   roomNumber: string;
 
-  @Prop({ type: String, enum: RoomType, default: RoomType.SINGLE })
+  @Prop({ type: String, enum: RoomType, default: RoomType.SIMPLE_SINGLE })
   type: RoomType;
 
   @Prop({ required: true })

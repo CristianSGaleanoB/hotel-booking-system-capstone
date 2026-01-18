@@ -37,16 +37,16 @@ export class SeedService {
     ]);
 
     const rooms = [
-      { hotel: hotels[0]._id, roomNumber: '101', type: RoomType.DELUXE, price: 250, capacity: 2, isAvailable: true },
-      { hotel: hotels[0]._id, roomNumber: '102', type: RoomType.SUITE, price: 400, capacity: 4, isAvailable: true },
-      { hotel: hotels[0]._id, roomNumber: '103', type: RoomType.DOUBLE, price: 180, capacity: 2, isAvailable: false },
-      { hotel: hotels[1]._id, roomNumber: '201', type: RoomType.SINGLE, price: 120, capacity: 1, isAvailable: true },
-      { hotel: hotels[1]._id, roomNumber: '202', type: RoomType.DOUBLE, price: 200, capacity: 2, isAvailable: true },
-      { hotel: hotels[1]._id, roomNumber: '203', type: RoomType.SUITE, price: 350, capacity: 3, isAvailable: true },
-      { hotel: hotels[2]._id, roomNumber: '301', type: RoomType.SINGLE, price: 100, capacity: 1, isAvailable: true },
-      { hotel: hotels[2]._id, roomNumber: '302', type: RoomType.SINGLE, price: 100, capacity: 1, isAvailable: false },
-      { hotel: hotels[2]._id, roomNumber: '303', type: RoomType.DOUBLE, price: 160, capacity: 2, isAvailable: true },
-      { hotel: hotels[2]._id, roomNumber: '304', type: RoomType.DOUBLE, price: 160, capacity: 2, isAvailable: true },
+      { hotel: hotels[0]._id, roomNumber: '101', type: RoomType.SIMPLE_SINGLE, price: 100, capacity: 1, isAvailable: true },
+      { hotel: hotels[0]._id, roomNumber: '102', type: RoomType.SIMPLE_DOUBLE, price: 150, capacity: 2, isAvailable: true },
+      { hotel: hotels[0]._id, roomNumber: '103', type: RoomType.SIMPLE_TRIPLE, price: 200, capacity: 3, isAvailable: true },
+      { hotel: hotels[0]._id, roomNumber: '104', type: RoomType.SUITE_DOUBLE, price: 300, capacity: 2, isAvailable: true },
+      { hotel: hotels[1]._id, roomNumber: '201', type: RoomType.SIMPLE_SINGLE, price: 110, capacity: 1, isAvailable: true },
+      { hotel: hotels[1]._id, roomNumber: '202', type: RoomType.SIMPLE_DOUBLE, price: 160, capacity: 2, isAvailable: true },
+      { hotel: hotels[1]._id, roomNumber: '203', type: RoomType.SUITE_FAMILY, price: 350, capacity: 3, isAvailable: true },
+      { hotel: hotels[2]._id, roomNumber: '301', type: RoomType.SIMPLE_SINGLE, price: 90, capacity: 1, isAvailable: true },
+      { hotel: hotels[2]._id, roomNumber: '302', type: RoomType.SIMPLE_DOUBLE, price: 140, capacity: 2, isAvailable: true },
+      { hotel: hotels[2]._id, roomNumber: '303', type: RoomType.SUITE_FAMILY, price: 330, capacity: 3, isAvailable: true },
     ];
 
     await this.roomModel.insertMany(rooms);
