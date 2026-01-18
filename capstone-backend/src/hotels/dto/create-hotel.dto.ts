@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber, IsOptional, Max, Min } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class CreateHotelDto {
   @IsString()
@@ -16,12 +16,6 @@ export class CreateHotelDto {
   @IsString()
   @IsOptional()
   description?: string;
-
-  @IsNumber()
-  @Min(0)
-  @Max(5)
-  @IsOptional()
-  rating?: number;
 
   @IsOptional()
   images?: string[];

@@ -21,21 +21,18 @@ export class SeedService {
         address: 'Av. Coastal 123',
         city: 'Cancun',
         description: 'Luxury hotel with ocean view',
-        rating: 5,
       },
       {
         name: 'Mountain Peak Lodge',
         address: 'Snowy Peak 456',
         city: 'Aspen',
         description: 'Cozy lodge in the mountains',
-        rating: 4,
       },
       {
         name: 'City Center Inn',
         address: 'Main St 789',
         city: 'New York',
         description: 'Conveniently located in the heart of the city',
-        rating: 3,
       },
     ]);
 

@@ -15,9 +15,6 @@ export class Hotel extends Document {
   @Prop()
   description: string;
 
-  @Prop({ default: 0 })
-  rating: number;
-
   @Prop({ type: [String], default: [] })
   images: string[];
 
