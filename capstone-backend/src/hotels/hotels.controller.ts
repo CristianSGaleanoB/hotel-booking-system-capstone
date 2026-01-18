@@ -19,16 +19,16 @@ export class HotelsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.hotelsService.findOne(+id);
+    return this.hotelsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateHotelDto: UpdateHotelDto) {
-    return this.hotelsService.update(+id, updateHotelDto);
+    return this.hotelsService.update(id, updateHotelDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.hotelsService.remove(+id);
+    return this.hotelsService.remove(id);
   }
 }

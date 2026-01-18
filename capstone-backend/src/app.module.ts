@@ -6,6 +6,8 @@ import { UsersModule } from './users/users.module';
 import { HotelsModule } from './hotels/hotels.module';
 import { RoomsModule } from './rooms/rooms.module';
 
+import { SeedModule } from './seed/seed.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -16,6 +18,7 @@ import { RoomsModule } from './rooms/rooms.module';
     UsersModule,
     HotelsModule,
     RoomsModule,
+    SeedModule,
   ],
   controllers: [],
   providers: [],
