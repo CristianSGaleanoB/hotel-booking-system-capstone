@@ -6,10 +6,14 @@ import * as bcrypt from 'bcrypt';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService,
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
@@ -24,9 +28,25 @@ export class UsersService {
     }
   }
 
-  // findAll() {
-  //   return `This action returns all users`;
-  // }
+  async loginUser(email: string, password: string) {
+    try {
+      const user = await this.userModel.findOne({ email });
+      const isPasswordValid = await bcrypt.compare(password, user!.password);
+
+      if (!isPasswordValid) {
+        throw new HttpException('Invalid Credentials', HttpStatus.BAD_REQUEST);
+      }
+
+      if (user && isPasswordValid) {
+        const payload = { email: user.email, sub: user._id, name: user.name };
+        return {
+          bearer: await this.jwtService.signAsync(payload),
+        };
+      }
+    } catch (error) {
+      throw new HttpException(`${error}`, HttpStatus.BAD_REQUEST);
+    }
+  }
 
   // findOne(id: number) {
   //   return `This action returns a #${id} user`;
