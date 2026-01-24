@@ -17,37 +17,52 @@ export class SeedService {
 
     const hotels = await this.hotelModel.insertMany([
       {
-        name: 'Grand Riviera Hotel',
-        address: 'Av. Coastal 123',
-        city: 'Cancun',
-        description: 'Luxury hotel with ocean view',
+        name: 'Hotel Salitre Funza',
+        address: 'Calle 15 # 10-20',
+        city: 'Funza',
+        description: 'Modern hotel near Bogota with great service.',
       },
       {
-        name: 'Mountain Peak Lodge',
-        address: 'Snowy Peak 456',
-        city: 'Aspen',
-        description: 'Cozy lodge in the mountains',
+        name: 'Refugio del Cocuy',
+        address: 'Vereda El Mortiño',
+        city: 'Cocuy',
+        description: 'Cozy retreat with stunning views of the Nevado.',
       },
       {
-        name: 'City Center Inn',
-        address: 'Main St 789',
-        city: 'New York',
-        description: 'Conveniently located in the heart of the city',
+        name: 'Casona Colonial Soata',
+        address: 'Carrera 4 # 5-12',
+        city: 'Soata',
+        description: 'Traditional stay in the heart of Soata.',
+      },
+      {
+        name: 'Sal de Nemocon Resort',
+        address: 'Diagonal 2 # 1-05',
+        city: 'Nemocon',
+        description: 'Luxury resort near the salt mines.',
+      },
+      {
+        name: 'Patrimonio Salamina',
+        address: 'Calle de la Realidad',
+        city: 'Salamina',
+        description: 'Stay in a historical building in the coffee region.',
+      },
+      {
+        name: 'Boutique Santa Marta Beach',
+        address: 'Rodadero Carrera 2',
+        city: 'Santa Marta',
+        description: 'Beautiful beach hotel with direct ocean access.',
       },
     ]);
 
-    const rooms = [
-      { hotel: hotels[0]._id, roomNumber: '101', type: RoomType.SIMPLE_SINGLE, price: 100, capacity: 1, isAvailable: true },
-      { hotel: hotels[0]._id, roomNumber: '102', type: RoomType.SIMPLE_DOUBLE, price: 150, capacity: 2, isAvailable: true },
-      { hotel: hotels[0]._id, roomNumber: '103', type: RoomType.SIMPLE_TRIPLE, price: 200, capacity: 3, isAvailable: true },
-      { hotel: hotels[0]._id, roomNumber: '104', type: RoomType.SUITE_DOUBLE, price: 300, capacity: 2, isAvailable: true },
-      { hotel: hotels[1]._id, roomNumber: '201', type: RoomType.SIMPLE_SINGLE, price: 110, capacity: 1, isAvailable: true },
-      { hotel: hotels[1]._id, roomNumber: '202', type: RoomType.SIMPLE_DOUBLE, price: 160, capacity: 2, isAvailable: true },
-      { hotel: hotels[1]._id, roomNumber: '203', type: RoomType.SUITE_FAMILY, price: 350, capacity: 3, isAvailable: true },
-      { hotel: hotels[2]._id, roomNumber: '301', type: RoomType.SIMPLE_SINGLE, price: 90, capacity: 1, isAvailable: true },
-      { hotel: hotels[2]._id, roomNumber: '302', type: RoomType.SIMPLE_DOUBLE, price: 140, capacity: 2, isAvailable: true },
-      { hotel: hotels[2]._id, roomNumber: '303', type: RoomType.SUITE_FAMILY, price: 330, capacity: 3, isAvailable: true },
-    ];
+    const rooms: any[] = [];
+    hotels.forEach((hotel, index) => {
+      rooms.push(
+        { hotel: hotel._id, roomNumber: `${index + 1}01`, type: RoomType.SIMPLE_SINGLE, price: 80, capacity: 1, isAvailable: true },
+        { hotel: hotel._id, roomNumber: `${index + 1}02`, type: RoomType.SIMPLE_DOUBLE, price: 120, capacity: 2, isAvailable: true },
+        { hotel: hotel._id, roomNumber: `${index + 1}03`, type: RoomType.SIMPLE_TRIPLE, price: 180, capacity: 3, isAvailable: true },
+        { hotel: hotel._id, roomNumber: `${index + 1}04`, type: RoomType.SUITE_FAMILY, price: 300, capacity: 5, isAvailable: true },
+      );
+    });
 
     await this.roomModel.insertMany(rooms);
 
