@@ -5,6 +5,7 @@ import { Room } from '../rooms/entities/room.entity';
 import { Hotel } from '../hotels/entities/hotel.entity';
 import { Booking } from '../bookings/entities/booking.entity';
 import { SearchDto } from './dto/search.dto';
+import { SearchOption } from './interfaces/search-result.interface';
 
 @Injectable()
 export class SearchService {
@@ -20,9 +21,9 @@ export class SearchService {
     const hotels = await this.hotelModel.find({ city, isActive: true }).exec();
     const hotelIds = hotels.map((h) => h._id);
 
-    const priceQuery: any = {};
-    if (minPrice !== undefined) priceQuery.$gte = minPrice;
-    if (maxPrice !== undefined) priceQuery.$lte = maxPrice;
+    const priceQuery: Record<string, number> = {};
+    if (minPrice !== undefined) priceQuery['$gte'] = minPrice;
+    if (maxPrice !== undefined) priceQuery['$lte'] = maxPrice;
 
     const rooms = await this.roomModel
       .find({
@@ -51,7 +52,7 @@ export class SearchService {
       roomsByHotel[hotelId].push(r);
     });
 
-    const results: any[] = [];
+    const results: SearchOption[] = [];
 
     for (const hotel of hotels) {
       const hotelRooms = roomsByHotel[hotel._id.toString()] || [];
@@ -81,18 +82,27 @@ export class SearchService {
     return results;
   }
 
+  /**
+   * Backtracking algorithm to find the best room combinations for a given number of people.
+   * It sorts rooms by capacity and tries to fill the target capacity with the minimum number of rooms.
+   * @param rooms List of available rooms in the hotel
+   * @param target Number of people to accommodate
+   * @returns Array of room combinations
+   */
   private findCombinations(rooms: Room[], target: number): Room[][] {
     const results: Room[][] = [];
     
     const sortedRooms = [...rooms].sort((a, b) => b.capacity - a.capacity);
 
     const backtrack = (startIndex: number, currentCombo: Room[], currentCapacity: number) => {
+      // If we reached or exceeded the target, we have a valid combination
       if (currentCapacity >= target) {
         results.push([...currentCombo]);
         return;
       }
 
       for (let i = startIndex; i < sortedRooms.length; i++) {
+        // Limit to top 3 combinations for brevity
         if (results.length >= 3) return;
 
         currentCombo.push(sortedRooms[i]);

@@ -17,6 +17,12 @@ export class BookingsService {
     private readonly promotionsService: PromotionsService,
   ) {}
 
+  /**
+   * Confirms a new booking after validating the total price and availability.
+   * @param createBookingDto Booking details from the request
+   * @param userId ID of the user creating the booking
+   * @returns The created booking document
+   */
   async confirmBooking(createBookingDto: CreateBookingDto, userId: string) {
     const { roomIds, totalPrice, adultCount, childCount, startDate, endDate } = createBookingDto;
 
@@ -77,6 +83,12 @@ export class BookingsService {
     };
   }
 
+  /**
+   * Cancels a booking if it's done at least 3 days before the start date.
+   * @param bookingId ID of the booking to cancel
+   * @param userId ID of the user requesting cancellation
+   * @returns Success message
+   */
   async cancelBooking(bookingId: string, userId: string){
     const booking = await this.bookingModel.findOne({ _id: bookingId});
     if(!booking) throw new NotFoundException('Booking not found');
@@ -97,6 +109,31 @@ export class BookingsService {
     return { message: 'Booking cancelled successfully' };
   }
 
+  async getUserBookings(userId: string) {
+  const userObjectId = new Types.ObjectId(userId);
+  const bookings = await this.bookingModel.find({ user: userObjectId })
+    .populate('rooms')
+    .populate('hotel')
+    .exec();
+  return bookings.map(booking => ({
+    id: booking._id,
+    checkIn: booking.startDate,
+    checkOut: booking.endDate,
+    finalCost: booking.totalPrice,
+    status: booking.status,
+    rooms: (booking.rooms as unknown as Room[]).map((room: Room) => ({
+      id: room._id as Types.ObjectId,
+      roomNumber: room.roomNumber,
+      type: room.type
+    }))
+  }));
+}
+
+  /**
+   * Internal method to calculate booking details, including availability check and promotion application.
+   * @param data Booking parameters (dates, rooms, guest counts)
+   * @returns Detailed calculation of the booking
+   */
   private async calculateBookingDetails(data: {
     startDate: string;
     endDate: string;

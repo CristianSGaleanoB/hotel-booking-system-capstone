@@ -9,6 +9,11 @@ export class PromotionsService {
         @InjectModel(FestiveCalendar.name) private readonly festiveModel: Model<FestiveCalendar>,
     ) {}
 
+    /**
+     * Calculates and applies various promotions (kids, group, festive) to the base price.
+     * @param data Booking information needed for promotion calculation
+     * @returns Object containing final price, total discount, and list of applied promotions
+     */
     async applyPromotions( data: { adultCount: number, childCount: number,
         city: string, startDate: Date, endDate: Date, basePrice: number}) {
             let totalDiscountMoney = 0;

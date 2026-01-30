@@ -57,7 +57,7 @@ export class SeedService {
       },
     ]);
 
-    const rooms: any[] = [];
+    const rooms: Partial<Room>[] = [];
     hotels.forEach((hotel, index) => {
       rooms.push(
         { hotel: hotel._id, roomNumber: `${index + 1}01`, type: RoomType.SIMPLE_SINGLE, price: 80, capacity: 1, isAvailable: true },
