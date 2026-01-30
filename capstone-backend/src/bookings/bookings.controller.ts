@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Request, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, NotFoundException, Param, HttpCode, HttpStatus } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
 import { CreateSummaryDto } from './dto/create-summary.dto';
 import { CreateBookingDto } from './dto/create-booking.dto';
@@ -19,5 +19,13 @@ export class BookingsController {
   async confirmBooking(@Body() createBookingDto: CreateBookingDto, @Request() req) {
     const userId = req.user.sub || req.user.userId;
     return this.bookingsService.confirmBooking(createBookingDto, userId);
+  }
+
+  @Post(':id/cancel')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  async cancelBooking(@Param('id') bookingId: string, @Request() req){
+    const userId = req.user.sub || req.user.userId;
+    return this.bookingsService.cancelBooking(bookingId, userId);
   }
 }

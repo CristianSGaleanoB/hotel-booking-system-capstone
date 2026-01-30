@@ -1,4 +1,4 @@
-import { Injectable, ConflictException, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Booking } from './entities/booking.entity';
@@ -7,6 +7,7 @@ import { CreateSummaryDto } from './dto/create-summary.dto';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { PromotionsService } from 'src/promotions/promotions.service';
 import { Hotel } from 'src/hotels/entities/hotel.entity';
+import { BookingStatus } from 'src/enums/booking-status.enum';
 
 @Injectable()
 export class BookingsService {
@@ -40,7 +41,7 @@ export class BookingsService {
       startDate: checkIn,
       endDate: checkOut,
       totalPrice: promoDetails.finalPrice,
-      status: 'CONFIRMED',
+      status: BookingStatus.CONFIRMED,
     });
 
     return await newBooking.save();
@@ -74,6 +75,26 @@ export class BookingsService {
       finalCost: promoDetails.finalPrice,
       cancellationPolicy: 'Cancelación 3 días antes de la fecha de reserva.',
     };
+  }
+
+  async cancelBooking(bookingId: string, userId: string){
+    const booking = await this.bookingModel.findOne({ _id: bookingId});
+    if(!booking) throw new NotFoundException('Booking not found');
+    if(booking.user.toString() !== userId){
+      throw new ForbiddenException('You do not have permission to cancel this booking');
+    }
+
+    const cancelDate = new Date();
+    const diffInMilliseconds = booking.startDate.getTime() - cancelDate.getTime();
+    const diffInDays = Math.ceil(diffInMilliseconds / (1000 * 60 * 60 * 24));
+
+    if(diffInDays < 3){
+      throw new BadRequestException('You can only cancel 3 days before the booking date');
+    }
+
+    booking.status = BookingStatus.CANCELLED;
+    await booking.save();
+    return { message: 'Booking cancelled successfully' };
   }
 
   private async calculateBookingDetails(data: {
