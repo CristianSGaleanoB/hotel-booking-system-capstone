@@ -3,17 +3,20 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Hotel } from '../hotels/entities/hotel.entity';
 import { Room, RoomType } from '../rooms/entities/room.entity';
+import { FestiveCalendar } from '../promotions/entities/festive-calendar.schema';
 
 @Injectable()
 export class SeedService {
   constructor(
     @InjectModel(Hotel.name) private readonly hotelModel: Model<Hotel>,
     @InjectModel(Room.name) private readonly roomModel: Model<Room>,
+    @InjectModel(FestiveCalendar.name) private readonly festiveModel: Model<FestiveCalendar>,
   ) {}
 
   async runSeed() {
     await this.roomModel.deleteMany({});
     await this.hotelModel.deleteMany({});
+    await this.festiveModel.deleteMany({});
 
     const hotels = await this.hotelModel.insertMany([
       {
@@ -66,6 +69,21 @@ export class SeedService {
 
     await this.roomModel.insertMany(rooms);
 
-    return { message: 'Seed executed successfully', hotels: hotels.length, rooms: rooms.length };
+    await this.festiveModel.insertMany([
+      {
+        name: 'Feria de las Flores',
+        startDate: new Date('2026-08-07'),
+        city: 'Santa Marta',
+        discountPercentage: 20,
+      },
+      {
+        name: 'Carnaval de Negros y Blancos',
+        startDate: new Date('2026-01-05'),
+        city: 'Pasto',
+        discountPercentage: 15,
+      },
+    ]);
+
+    return { message: 'Seed executed successfully', hotels: hotels.length, rooms: rooms.length, festivals: 2 };
   }
 }

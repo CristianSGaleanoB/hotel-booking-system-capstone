@@ -9,6 +9,7 @@ import { BookingsModule } from './bookings/bookings.module';
 import { SearchModule } from './search/search.module';
 
 import { SeedModule } from './seed/seed.module';
+import { PromotionsModule } from './promotions/promotions.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { SeedModule } from './seed/seed.module';
     BookingsModule,
     SearchModule,
     SeedModule,
+    PromotionsModule,
   ],
   controllers: [],
   providers: [],

@@ -11,8 +11,12 @@ export class CreateSummaryDto {
   @IsMongoId({ each: true })
   roomIds: string[];
 
-  @IsOptional()
   @IsInt()
   @Min(1)
-  peopleCount?: number;
+  adultCount: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  childCount?: number;
 }

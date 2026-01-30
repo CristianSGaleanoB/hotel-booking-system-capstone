@@ -15,5 +15,12 @@ export class CreateBookingDto {
 
   @IsNumber()
   @IsNotEmpty()
+  adultCount: number;
+
+  @IsNumber()
+  childCount: number;
+
+  @IsNumber()
+  @IsNotEmpty()
   totalPrice: number;
 }
