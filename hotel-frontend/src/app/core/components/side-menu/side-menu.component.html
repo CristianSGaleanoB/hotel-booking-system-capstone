@@ -1,0 +1,33 @@
+<nav class="flex flex-col h-full bg-white border-r border-gray-200 py-3 items-center">
+  <!-- Logo Section -->
+  <div class="flex flex-col items-center gap-0 cursor-pointer hover:opacity-80 transition-opacity" routerLink="/">
+    <fa-icon [icon]="customHotel" class="text-primary text-8xl"></fa-icon>
+    <span class="text-black font-bold text-3xl tracking-tight -mt-2">Traveler</span>
+  </div>
+
+  <!-- Divider -->
+  <div class="border-t-2 border-gray-200 my-6 min-h-[0.7px] w-full"></div>
+
+  <!-- Auth Section -->
+  <div class="flex flex-col items-center gap-1">
+    <!-- User Avatar -->
+    <div class="cursor-pointer hover:opacity-80 transition-opacity" (click)="!authService.isLoggedIn() ? login() : null">
+        <fa-icon [icon]="customUser" class="text-accent text-7xl"></fa-icon>
+    </div>
+
+    <!-- Login/User State -->
+    @if (!authService.isLoggedIn()) {
+      <button (click)="login()" 
+              class="text-gray-600 font-medium text-xl hover:text-primary transition-colors -mt-2">
+        Ingresar
+      </button>
+    } @else {
+      <div class="flex flex-col items-center">
+        <span class="text-xl font-medium text-gray-700 -mt-2">User</span>
+        <button (click)="logout()" class="text-xs text-red-500 hover:text-red-700 -mt-1">
+          Salir
+        </button>
+      </div>
+    }
+  </div>
+</nav>
