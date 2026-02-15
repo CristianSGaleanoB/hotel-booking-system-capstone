@@ -16,9 +16,14 @@ export class LoginComponent {
   onLogin(credentials: any) {
     this.isLoading.set(true);
     
-    setTimeout(() => {
-      this.authService.login();
-      this.isLoading.set(false);
-    }, 1500);
+    this.authService.login(credentials).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+      },
+      error: (error) => {
+        console.error('Login failed:', error);
+        this.isLoading.set(false);
+      }
+    });
   }
 }
