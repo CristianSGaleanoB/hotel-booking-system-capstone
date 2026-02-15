@@ -1,4 +1,5 @@
 import { Component, signal, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -11,7 +12,9 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class LoginComponent {
   authService = inject(AuthService);
+  router = inject(Router);
   isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
 
   onLogin(credentials: any) {
     this.isLoading.set(true);
@@ -19,10 +22,11 @@ export class LoginComponent {
     this.authService.login(credentials).subscribe({
       next: () => {
         this.isLoading.set(false);
+        this.router.navigate(['/']);
       },
       error: (error) => {
-        console.error('Login failed:', error);
         this.isLoading.set(false);
+        this.errorMessage.set('Credenciales inválidas. Por favor, intenta de nuevo.');
       }
     });
   }

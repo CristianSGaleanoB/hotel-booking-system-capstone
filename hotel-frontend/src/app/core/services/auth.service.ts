@@ -4,6 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../app.constants';
 import { tap } from 'rxjs';
 
+interface LoginResponse {
+  bearer: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,12 +22,11 @@ export class AuthService {
   }
 
   login(credentials: any) {
-    return this.http.post<{ token: string }>(`${API_URL}/auth/login`, credentials).pipe(
+    return this.http.post<LoginResponse>(`${API_URL}/auth/login`, credentials).pipe(
       tap(response => {
-        if (response.token) {
-          localStorage.setItem('auth_token', response.token);
+        if (response.bearer) {
+          localStorage.setItem('auth_token', response.bearer);
           this.isLoggedIn.set(true);
-          this.router.navigate(['/']);
         }
       })
     );

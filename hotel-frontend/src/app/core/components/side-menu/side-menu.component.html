@@ -16,18 +16,18 @@
     </div>
 
     <!-- Login/User State -->
-    @if (!authService.isLoggedIn()) {
-      <button (click)="login()" 
-              class="text-gray-600 font-medium text-xl hover:text-primary transition-colors -mt-2">
+    <div class="flex flex-col items-center gap-2 mt-2">
+      <button (click)="!authService.isLoggedIn() ? login() : null" 
+              class="text-gray-600 font-medium text-xl transition-colors"
+              [class.hover:text-primary]="!authService.isLoggedIn()">
         Ingresar
       </button>
-    } @else {
-      <div class="flex flex-col items-center">
-        <span class="text-xl font-medium text-gray-700 -mt-2">User</span>
-        <button (click)="logout()" class="text-xs text-red-500 hover:text-red-700 -mt-1">
+
+      @if (authService.isLoggedIn()) {
+        <button (click)="logout()" class="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-1 bg-red-50 rounded-md">
           Salir
         </button>
-      </div>
-    }
+      }
+    </div>
   </div>
 </nav>

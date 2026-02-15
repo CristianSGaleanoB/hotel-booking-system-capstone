@@ -4,6 +4,12 @@
   >
     <h1 class="text-4xl font-semibold text-accent text-center mb-10">Login</h1>
 
+    @if (errorMessage()) {
+      <div class="mb-6 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm rounded animate-pulse">
+        {{ errorMessage() }}
+      </div>
+    }
+
     <app-login-form 
       [isLoading]="isLoading()" 
       (loginSubmit)="onLogin($event)"
