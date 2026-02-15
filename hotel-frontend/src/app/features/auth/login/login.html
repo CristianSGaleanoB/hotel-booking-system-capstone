@@ -1,1 +1,39 @@
+<div class="flex items-center justify-center min-h-[calc(100vh-120px)]">
+  <!-- Login Card -->
+  <div
+    class="bg-white p-12 rounded-lg shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] border border-gray-100 w-full max-w-sm"
+  >
+    <h1 class="text-4xl font-semibold text-accent text-center mb-10">Login</h1>
 
+    <form class="space-y-6">
+      <!-- Email Field -->
+      <div class="relative">
+        <input
+          type="email"
+          placeholder="Email"
+          class="w-full px-4 py-2.5 rounded-lg border-2 border-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-20 text-gray-700 placeholder-gray-400 shadow-sm transition-all"
+        />
+        <p class="text-[10px] text-red-500 mt-1 ml-1 font-medium leading-none">invalid format</p>
+      </div>
+
+      <!-- Password Field -->
+      <div>
+        <input
+          type="password"
+          placeholder="Password"
+          class="w-full px-4 py-2.5 rounded-lg border-2 border-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-20 text-gray-700 placeholder-gray-400 shadow-sm transition-all"
+        />
+      </div>
+
+      <!-- Login Button -->
+      <div class="flex justify-center mt-12">
+        <button
+          type="submit"
+          class="bg-accent hover:opacity-90 text-white font-medium py-2.5 px-12 rounded-lg transition-all duration-200 shadow-md active:scale-95"
+        >
+          Login
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

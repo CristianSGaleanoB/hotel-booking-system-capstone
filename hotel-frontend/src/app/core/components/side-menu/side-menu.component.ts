@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-side-menu',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, FontAwesomeModule],
+  imports: [RouterLink, FontAwesomeModule],
   templateUrl: './side-menu.component.html',
   styleUrl: './side-menu.component.css'
 })
