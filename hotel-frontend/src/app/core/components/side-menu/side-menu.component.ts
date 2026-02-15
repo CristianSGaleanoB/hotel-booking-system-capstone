@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { customHotelIcon, customUserIcon } from '../../constants/custom-icons';
@@ -14,13 +14,14 @@ import { AuthService } from '../../services/auth.service';
 })
 export class SideMenuComponent {
   authService = inject(AuthService);
+  private router = inject(Router);
   
   faSearch = faSearch;
   customHotel = customHotelIcon;
   customUser = customUserIcon;
 
   login() {
-    this.authService.login();
+    this.router.navigate(['/auth']);
   }
 
   logout() {
