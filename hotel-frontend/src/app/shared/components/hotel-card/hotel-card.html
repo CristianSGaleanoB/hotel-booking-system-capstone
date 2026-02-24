@@ -1,0 +1,40 @@
+<div class="hotel-card-container">
+    <div class="hotel-info-section">
+        <div class="hotel-details">
+            <h2 class="hotel-name">{{ hotel.name }}</h2>
+            <div class="hotel-location">
+                <fa-icon [icon]="customUser" class="text-accent"></fa-icon>
+                <span>{{ hotel.city }}</span>
+            </div>
+            <p class="hotel-description">{{ hotel.description }}</p>
+        </div>
+
+        <div class="promotions-section">
+            <h4 class="promo-title">Promociones Disponibles</h4>
+            <ul class="promo-list">
+                @if ('appliedPromotions' in data) {
+                    @for (promo of data.appliedPromotions; track promo.name) {
+                        <li>• {{ promo.name }}: {{ promo.discountPercentage }}%</li>
+                    }
+                } @else {
+                    <li>Próximamente más ofertas</li>
+                }
+            </ul>
+        </div>
+
+        <div class="action-section">
+            <button class="btn-book-main">Book</button>
+        </div>
+    </div>
+
+    @if (hasSuggestedRooms) {
+        <div class="suggested-rooms-container">
+            <h3 class="section-title">Habitaciones disponibles</h3>
+            <div class="rooms-grid">
+                @for (roomData of ($any(data).rooms); track roomData.id) {
+                    <app-room [room]="roomData"></app-room>
+                }
+            </div>
+        </div>
+    }
+</div>

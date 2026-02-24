@@ -1,0 +1,22 @@
+<div class="room-container">
+    <div class="room-header">
+        <div class="room-info-top">
+            <h3 class="room-name">{{ room.type }}</h3>
+            <div class="room-meta">
+                <span class="capacity">
+                    <fa-icon [icon]="customUser" class="text-accent mr-1"></fa-icon>
+                    Capacity: {{ room.capacity }}
+                </span>
+                <span class="price"> {{ room.price }}</span>
+            </div>
+        </div>
+
+        <button class="btn-book">
+            <span class="status-dot"></span> Book
+        </button>
+    </div>
+
+    <p class="room-description">
+        Descripción: Una habitación confortable de tipo {{ room.type }} diseñada para tu descanso con los mejores estándares.
+    </p>
+</div>

@@ -1,0 +1,113 @@
+.hotel-card-container {
+    background-color: white;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border: 1px solid theme('colors.bg-light');
+}
+
+.hotel-info-section {
+    display: flex;
+    flex-wrap: wrap; // Para que sea responsivo
+    gap: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid theme('colors.bg-light');
+    margin-bottom: 1.5rem;
+}
+
+.hotel-details {
+    flex: 2; // Toma más espacio
+    min-width: 300px;
+}
+
+.hotel-name {
+    font-size: 2.25rem;
+    color: theme('colors.primary');
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+}
+
+.hotel-location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+}
+
+.hotel-description {
+    color: #444;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.promotions-section {
+    flex: 1;
+    background-color: theme('colors.bg-light');
+    padding: 1.25rem;
+    border-radius: 1rem;
+    min-width: 250px;
+    border: 1px solid rgba(205, 163, 72, 0.2); // Sutil toque dorado
+}
+
+.promo-title {
+    margin: 0 0 0.75rem 0;
+    color: theme('colors.primary');
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.promo-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #555;
+    font-size: 0.9375rem;
+
+    li {
+        margin-bottom: 0.5rem;
+    }
+}
+
+.action-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-book-main {
+    background-color: theme('colors.accent');
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 3rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 4px 14px 0 rgba(205, 163, 72, 0.39);
+
+    &:hover {
+        background-color: theme('colors.primary');
+        transform: translateY(-2px);
+    }
+}
+
+.suggested-rooms-container {
+    padding-top: 1rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: theme('colors.primary');
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
