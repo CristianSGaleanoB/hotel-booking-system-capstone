@@ -1,11 +1,12 @@
-import { Hotel } from "./hotel.interface";
 import { RoomSuggestion } from "./roomSuggestion.interface";
-import { AppliedPromotion } from "./appliedPrommotion.interface";
 
 export interface SearchResult {
-    hotel: Hotel;
+    hotelId: string;
+    hotelName: string;
+    location: string;
+    optionLabel: string;
     rooms: RoomSuggestion[];
     totalPrice: number;
-    totalDiscount: number;
-    appliedPromotions: AppliedPromotion[];
+    available: boolean;
+    description?: string;
 }

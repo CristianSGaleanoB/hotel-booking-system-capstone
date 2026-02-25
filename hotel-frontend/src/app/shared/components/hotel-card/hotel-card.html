@@ -20,8 +20,8 @@
             <div class="promotions-box bg-white border border-gray-200 rounded-xl p-3 min-w-[200px] self-start mt-2">
                 <h4 class="text-primary font-normal text-xs mb-1.5 uppercase tracking-tight">Promociones Disponibles</h4>
                 <ul class="space-y-1">
-                    @if ('appliedPromotions' in data) {
-                        @for (promo of data.appliedPromotions; track promo.name) {
+                    @if (hasPromotions) {
+                        @for (promo of promotions; track promo.name) {
                             <li class="flex items-center gap-1.5 text-gray-500 font-bold text-[9px]">
                                 <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
                                 {{ promo.name }}
@@ -60,7 +60,7 @@
     @if (hasSuggestedRooms) {
         <div class="rooms-footer bg-gray-50/50 px-4 pb-3 pt-1">
             <div class="flex overflow-x-auto gap-3 pb-1 no-scrollbar">
-                @for (roomData of ($any(data).rooms); track roomData.id) {
+                @for (roomData of roomSuggestions; track roomData.id) {
                     <div class="min-w-[220px]">
                         <app-room [room]="roomData"></app-room>
                     </div>

@@ -20,12 +20,38 @@ export class HotelCard {
   imageIcon = customImageIcon;
   bookIcon = customBookIcon;
   
+  get roomSuggestions(): any[] {
+    if ('rooms' in this.data && this.data.rooms) {
+      return this.data.rooms;
+    }
+    return [];
+  }
+
   get hasSuggestedRooms(): boolean {
-    if ('rooms' in this.data) return this.data.rooms.length > 0;
-    return (this.data as any).rooms?.length > 0;
+    return this.roomSuggestions.length > 0;
+  }
+
+  get promotions(): { name: string }[] {
+    if ('appliedPromotions' in this.data && Array.isArray(this.data.appliedPromotions)) {
+      return this.data.appliedPromotions;
+    }
+    return [];
+  }
+
+  get hasPromotions(): boolean {
+    return this.promotions.length > 0;
   }
 
   get hotel(): Hotel {
-    return 'hotel' in this.data ? this.data.hotel : this.data;
+    if ('hotelName' in this.data) {
+      return {
+        _id: this.data.hotelId,
+        name: this.data.hotelName,
+        description: this.data.description ?? '',
+        city: this.data.location,
+        isActive: true
+      };
+    }
+    return this.data as Hotel;
   }
 }
