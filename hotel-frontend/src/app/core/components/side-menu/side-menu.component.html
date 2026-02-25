@@ -1,30 +1,25 @@
-<nav class="flex flex-col h-full bg-white border-r border-gray-200 py-3 items-center">
-  <!-- Logo Section -->
+<nav class="flex flex-col h-full bg-white border-r border-gray-200 py-2 items-center">
   <div class="flex flex-col items-center gap-0 cursor-pointer hover:opacity-80 transition-opacity" routerLink="/">
-    <fa-icon [icon]="customHotel" class="text-primary text-8xl"></fa-icon>
-    <span class="text-black font-bold text-3xl tracking-tight -mt-2">Traveler</span>
+    <fa-icon [icon]="customHotel" class="text-primary text-7xl"></fa-icon>
+    <span class="text-black font-bold text-2xl tracking-tight -mt-1">Traveler</span>
   </div>
 
-  <!-- Divider -->
-  <div class="border-t-2 border-gray-200 my-6 min-h-[0.7px] w-full"></div>
+  <div class="border-t-2 border-gray-200 my-3 min-h-[0.7px] w-full"></div>
 
-  <!-- Auth Section -->
   <div class="flex flex-col items-center gap-1">
-    <!-- User Avatar -->
     <div class="cursor-pointer hover:opacity-80 transition-opacity" (click)="!authService.isLoggedIn() ? login() : null">
-        <fa-icon [icon]="customUser" class="text-accent text-7xl"></fa-icon>
+        <fa-icon [icon]="customUser" class="text-accent text-6xl"></fa-icon>
     </div>
 
-    <!-- Login/User State -->
-    <div class="flex flex-col items-center gap-2 mt-2">
+    <div class="flex flex-col items-center gap-1 mt-1">
       <button (click)="!authService.isLoggedIn() ? login() : null" 
-              class="text-gray-600 font-medium text-xl transition-colors"
+              class="text-gray-600 font-medium text-lg transition-colors"
               [class.hover:text-primary]="!authService.isLoggedIn()">
         Ingresar
       </button>
 
       @if (authService.isLoggedIn()) {
-        <button (click)="logout()" class="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-1 bg-red-50 rounded-md">
+        <button (click)="logout()" class="text-[10px] text-red-500 hover:text-red-700 font-semibold px-1.5 py-0.5 bg-red-50 rounded-md">
           Salir
         </button>
       }

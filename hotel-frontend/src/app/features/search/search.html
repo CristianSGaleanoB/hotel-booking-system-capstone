@@ -1,1 +1,18 @@
-<p>search works!</p>
+<div class="search-page-layout grid grid-cols-1 lg:grid-cols-[25rem_1fr] h-full overflow-hidden">
+    <aside class="search-sidebar-container bg-white border-r border-gray-100 overflow-y-auto p-5">
+        <app-search-form 
+            [cities]="getUniqueCities()"
+            (search)="handleSearch($event)">
+        </app-search-form>
+    </aside>
+
+    <main class="content-area bg-gray-50 overflow-y-auto p-5 lg:p-6">
+        @if (searchService.isLoading() || hotelService.isLoading()) {
+            <div class="flex justify-center p-12">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-accent"></div>
+            </div>
+        } @else {
+            <app-hotel-list [data]="getDisplayData()"></app-hotel-list>
+        }
+    </main>
+</div>

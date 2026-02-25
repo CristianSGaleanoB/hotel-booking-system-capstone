@@ -3,4 +3,5 @@ export interface RoomSuggestion {
     type: string;
     price: number;
     capacity: number;
+    description?: string;
 }

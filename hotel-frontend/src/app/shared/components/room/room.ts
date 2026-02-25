@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { customUserIcon } from '../../../core/constants/custom-icons';
+import { customCapacityIcon } from '../../../core/constants/custom-icons';
 import { RoomSuggestion } from '../../../core/interfaces/roomSuggestion.interface';
 
 @Component({
@@ -12,7 +12,7 @@ import { RoomSuggestion } from '../../../core/interfaces/roomSuggestion.interfac
 })
 export class Room {
   @Input() room!: RoomSuggestion;
-  customUser = customUserIcon;
+  capacityIcon = customCapacityIcon;
   
   constructor() {}
 }

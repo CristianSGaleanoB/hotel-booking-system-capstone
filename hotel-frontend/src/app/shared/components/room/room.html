@@ -1,22 +1,18 @@
-<div class="room-container">
-    <div class="room-header">
-        <div class="room-info-top">
-            <h3 class="room-name">{{ room.type }}</h3>
-            <div class="room-meta">
-                <span class="capacity">
-                    <fa-icon [icon]="customUser" class="text-accent mr-1"></fa-icon>
-                    Capacity: {{ room.capacity }}
-                </span>
-                <span class="price"> {{ room.price }}</span>
-            </div>
+<div class="room-container bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+    <div class="room-header flex flex-col gap-2">
+        <div class="room-info-top flex justify-between items-start">
+            <h3 class="room-name text-primary font-normal text-sm">{{ room.type }}</h3>
         </div>
 
-        <button class="btn-book">
-            <span class="status-dot"></span> Book
-        </button>
+        <div class="room-meta flex items-center justify-between mt-0.5">
+            <span class="capacity flex items-center gap-1.5 text-gray-500 font-bold text-[10px]">
+                <fa-icon [icon]="capacityIcon" class="text-primary text-xs"></fa-icon>
+                Capacidad: {{ room.capacity }}
+            </span>
+        </div>
     </div>
 
-    <p class="room-description">
-        Descripción: Una habitación confortable de tipo {{ room.type }} diseñada para tu descanso con los mejores estándares.
+    <p class="room-description text-gray-400 text-[10px] leading-tight mt-2 line-clamp-2">
+        {{ $any(room).description || 'Una habitación confortable diseñada para tu descanso.' }}
     </p>
 </div>
