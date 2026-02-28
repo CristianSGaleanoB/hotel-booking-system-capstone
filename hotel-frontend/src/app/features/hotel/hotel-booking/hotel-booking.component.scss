@@ -1,0 +1,33 @@
+.booking-container {
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 2rem auto;
+  max-width: 600px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    color: #333;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #666;
+  }
+
+  .confirm-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
