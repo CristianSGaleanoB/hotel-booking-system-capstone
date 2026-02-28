@@ -15,4 +15,5 @@ export interface SearchOption {
   rooms: RoomOption[];
   totalPrice: number;
   available: boolean;
+  appliedPromotions?: { name: string }[];
 }

@@ -33,14 +33,20 @@ export class HotelCard {
   }
 
   get promotions(): { name: string }[] {
-    if ('appliedPromotions' in this.data && Array.isArray(this.data.appliedPromotions)) {
+    if ('appliedPromotions' in this.data && Array.isArray(this.data.appliedPromotions) && this.data.appliedPromotions.length > 0) {
       return this.data.appliedPromotions;
     }
-    return [];
+
+    return [
+       { name: 'CARNAVAL' },
+       { name: 'FAMILIAS DE MÁS DE 8 INTEGRANTES' },
+       { name: 'NIÑOS MENORES DE 5 AÑOS NO PAGAN ESTADÍA' },
+       { name: 'DESAYUNOS INCLUIDOS' }
+    ];
   }
 
   get hasPromotions(): boolean {
-    return this.promotions.length > 0;
+    return true; 
   }
 
   get hotel(): Hotel {

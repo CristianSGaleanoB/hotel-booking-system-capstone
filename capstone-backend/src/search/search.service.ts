@@ -6,6 +6,7 @@ import { Hotel } from '../hotels/entities/hotel.entity';
 import { Booking } from '../bookings/entities/booking.entity';
 import { SearchDto } from './dto/search.dto';
 import { SearchOption } from './interfaces/search-result.interface';
+import { PromotionsService } from '../promotions/promotions.service';
 
 @Injectable()
 export class SearchService {
@@ -13,6 +14,7 @@ export class SearchService {
     @InjectModel(Room.name) private roomModel: Model<Room>,
     @InjectModel(Hotel.name) private hotelModel: Model<Hotel>,
     @InjectModel(Booking.name) private bookingModel: Model<Booking>,
+    private promotionsService: PromotionsService,
   ) {}
 
   async findOptions(searchDto: SearchDto) {
@@ -60,9 +62,21 @@ export class SearchService {
 
       const combinations = this.findCombinations(hotelRooms, peopleCount);
       
-      combinations.forEach((combo, index) => {
-        const totalPrice = combo.reduce((sum, r) => sum + r.price, 0);
-        results.push({
+      const optionPromises = combinations.map(async (combo, index) => {
+        const rawTotalPrice = combo.reduce((sum, r) => sum + r.price, 0);
+
+        const promoResult = await this.promotionsService.applyPromotions({
+          adultCount: peopleCount,
+          childCount: 0,
+          city: hotel.city,
+          startDate: new Date(startDate),
+          endDate: new Date(endDate),
+          basePrice: rawTotalPrice
+        });
+
+        const mappedPromotions = promoResult.promotionsApplied.map(promo => ({ name: promo }));
+
+        return {
           hotelId: hotel._id,
           hotelName: hotel.name,
           location: hotel.city,
@@ -73,10 +87,14 @@ export class SearchService {
             price: r.price,
             capacity: r.capacity,
           })),
-          totalPrice,
+          totalPrice: promoResult.finalPrice,
           available: true,
-        });
+          appliedPromotions: mappedPromotions
+        };
       });
+
+      const options = await Promise.all(optionPromises);
+      results.push(...options);
     }
 
     return results;

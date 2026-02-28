@@ -5,6 +5,7 @@ import { SearchController } from './search.controller';
 import { Room, RoomSchema } from '../rooms/entities/room.entity';
 import { Hotel, HotelSchema } from '../hotels/entities/hotel.entity';
 import { Booking, BookingSchema } from '../bookings/entities/booking.entity';
+import { PromotionsModule } from '../promotions/promotions.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { Booking, BookingSchema } from '../bookings/entities/booking.entity';
       { name: Hotel.name, schema: HotelSchema },
       { name: Booking.name, schema: BookingSchema },
     ]),
+    PromotionsModule,
   ],
   controllers: [SearchController],
   providers: [SearchService],

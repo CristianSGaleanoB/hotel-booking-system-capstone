@@ -29,4 +29,22 @@ export class HotelBookingComponent implements OnInit {
       this.hotel.set(foundHotel || null);
     }
   }
+
+  get activePromotions(): { name: string }[] {
+    const promos: { name: string }[] = [];
+    const searchResults = this.searchService.searchResults();
+    const currentId = this.hotelId;
+
+    if (currentId && searchResults && searchResults.length > 0) {
+      const searchResult = searchResults.find(r => r.hotelId === currentId);
+      if (searchResult && searchResult.appliedPromotions) {
+         return searchResult.appliedPromotions;
+      }
+    }
+
+    promos.push({ name: 'Niños menores de 5 años no pagan estadía' });
+    promos.push({ name: 'Desayunos incluídos' });
+
+    return promos;
+  }
 }

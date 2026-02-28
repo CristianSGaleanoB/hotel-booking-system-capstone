@@ -18,10 +18,10 @@
       </div>
     </div>
 
-    <div class="promotions-box" *ngIf="h.appliedPromotions && h.appliedPromotions.length > 0">
+    <div class="promotions-box">
       <h3>Promociones Disponibles</h3>
       <ul>
-        <li *ngFor="let promo of h.appliedPromotions">{{ promo.name }}</li>
+        <li *ngFor="let promo of activePromotions">{{ promo.name }}</li>
       </ul>
     </div>
   </header>
