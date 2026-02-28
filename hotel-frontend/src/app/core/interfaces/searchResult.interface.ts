@@ -9,4 +9,5 @@ export interface SearchResult {
     totalPrice: number;
     available: boolean;
     description?: string;
+    appliedPromotions?: { name: string }[];
 }

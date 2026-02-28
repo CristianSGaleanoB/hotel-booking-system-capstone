@@ -7,4 +7,5 @@ export interface Hotel{
     city: string;
     isActive: boolean;
     rooms?: RoomSuggestion[];
+    appliedPromotions?: { name: string }[];
 }

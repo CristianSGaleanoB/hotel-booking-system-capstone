@@ -1,16 +1,90 @@
-<div class="booking-container">
-  <h1>Hotel Booking</h1>
-  <p>Booking for Hotel ID: <strong>{{ hotelId }}</strong></p>
-  
-  <div *ngIf="searchContext()" class="search-context">
-    <h3>Previous Search Context:</h3>
-    <ul>
-      <li><strong>City:</strong> {{ searchContext()?.city }}</li>
-      <li><strong>Check-in:</strong> {{ searchContext()?.startDate || searchContext()?.checkIn }}</li>
-      <li><strong>Check-out:</strong> {{ searchContext()?.endDate || searchContext()?.checkOut }}</li>
-      <li><strong>Guests:</strong> {{ searchContext()?.peopleCount || searchContext()?.guests }}</li>
-    </ul>
-  </div>
+<div class="booking-page" *ngIf="hotel() as h">
+  <header class="booking-header">
+    <div class="hotel-info">
+      <div class="title-row">
+        <h1>{{ h.name }}</h1>
+      </div>
+      <div class="location-row">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>{{ h.city }}</span>
+      </div>
+      <div class="description-row">
+        <div class="globe-placeholder">
+          <i class="fas fa-globe"></i>
+        </div>
+        <div class="description-text">
+          <p><strong>Descripción:</strong> {{ h.description }}</p>
+        </div>
+      </div>
+    </div>
 
-  <button class="confirm-btn">Confirm Booking</button>
+    <div class="promotions-box" *ngIf="h.appliedPromotions && h.appliedPromotions.length > 0">
+      <h3>Promociones Disponibles</h3>
+      <ul>
+        <li *ngFor="let promo of h.appliedPromotions">{{ promo.name }}</li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="search-summary">
+    <div class="summary-box dates-box">
+      <h4>Fechas</h4>
+      <div class="box-content">
+        <div class="date-item">
+          <i class="fas fa-plane-arrival"></i>
+          <span>Llegada</span>
+          <span class="date-value">{{ searchContext()?.startDate || searchContext()?.checkIn || '1 de Enero, 2025' }}</span>
+        </div>
+        <div class="date-item">
+          <i class="fas fa-plane-departure"></i>
+          <span>Salida</span>
+          <span class="date-value">{{ searchContext()?.endDate || searchContext()?.checkOut || '2 de Enero, 2025' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-box guests-box">
+      <h4>Cantidad de huéspedes</h4>
+      <div class="box-content">
+        <div class="guest-input">
+          <input type="number" [value]="searchContext()?.peopleCount || searchContext()?.guests || 1" readonly>
+          <span>Adultos</span>
+        </div>
+        <div class="guest-input">
+          <input type="number" value="0" readonly>
+          <span>Niños</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rooms-section">
+    <h3>Habitaciones disponibles</h3>
+    <div class="rooms-container">
+      <div class="rooms-grid">
+        <div class="room-card" *ngFor="let room of h.rooms">
+          <div class="room-header">
+            <h4>{{ room.type }}</h4>
+            <div class="book-status">
+              <input type="radio" name="room-select">
+              <label>Book</label>
+            </div>
+          </div>
+          <div class="room-info">
+            <span class="capacity"><i class="fas fa-users"></i> Capacidad: {{ room.capacity }}</span>
+            <span class="price">{{ room.price }}$</span>
+          </div>
+          <p class="room-description">{{ room.description || 'Descripción: Lorem Ipsum is simply dummy text of the printing and typesetting industry.' }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <button class="fab-book">
+    <i class="fas fa-calendar-alt"></i>
+    <span>Book</span>
+  </button>
+</div>
+
+<div class="loading-state" *ngIf="!hotel()">
+  <p>Cargando información del hotel...</p>
 </div>

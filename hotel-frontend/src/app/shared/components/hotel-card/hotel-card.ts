@@ -5,11 +5,12 @@ import { SearchResult } from '../../../core/interfaces/searchResult.interface';
 import { Room } from '../room/room';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { customPinIcon, customImageIcon, customBookIcon } from '../../../core/constants/custom-icons';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-hotel-card',
   standalone: true,
-  imports: [CommonModule, Room, FontAwesomeModule],
+  imports: [CommonModule, Room, FontAwesomeModule, RouterModule],
   templateUrl: './hotel-card.html',
   styleUrl: './hotel-card.scss',
 })
@@ -49,7 +50,8 @@ export class HotelCard {
         name: this.data.hotelName,
         description: this.data.description ?? '',
         city: this.data.location,
-        isActive: true
+        isActive: true,
+        appliedPromotions: this.data.appliedPromotions
       };
     }
     return this.data as Hotel;
