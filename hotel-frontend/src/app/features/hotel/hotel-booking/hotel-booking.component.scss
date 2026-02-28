@@ -1,5 +1,5 @@
-$accent-color: #D4AF37; // Mustard yellowish
-$text-primary: #1A3050; // Deep blue-ish
+$accent-color: #D4AF37; 
+$text-primary: #1A3050; 
 $text-secondary: #555;
 $border-color: #DDD;
 $bg-main: #FFFFFF;
@@ -15,7 +15,7 @@ $card-border: #E5E7EB;
 
   header.booking-header {
     display: grid;
-    grid-template-cols: 1fr 300px;
+    grid-template-columns: 1fr 300px;
     gap: 2rem;
     margin-bottom: 2.5rem;
 
@@ -180,9 +180,7 @@ $card-border: #E5E7EB;
       overflow-y: auto;
 
       .rooms-grid {
-        display: grid;
-        grid-template-cols: 1fr 1fr;
-        gap: 2rem;
+        grid-template-columns: 1fr 1fr;
       }
 
       .room-card {
@@ -287,4 +285,80 @@ $card-border: #E5E7EB;
   align-items: center;
   height: 400px;
   color: $text-secondary;
+}
+
+.suggested-room {
+  border: 2px solid $accent-color ;
+  background-color: #fefce8 ;
+  position: relative;
+  
+  &::before {
+    content: 'Sugerida';
+    position: absolute;
+    top: -10px;
+    right: 15px;
+    background: $accent-color;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+  }
+}
+
+.selected-room {
+  border-color: #f97316 ; 
+  background-color: #fffaf5 ; 
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  border: 1px solid $border-color;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: 40px;
+  background: white;
+
+  button {
+    background: #f9fafb;
+    border: none;
+    padding: 0 0.75rem;
+    height: 100%;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #4b5563;
+    cursor: pointer;
+    transition: background 0.2s;
+    
+    &:hover {
+      background: #e5e7eb;
+    }
+  }
+
+  input[type="number"] {
+    width: 2.5rem;
+    text-align: center;
+    border: none;
+    border-left: 1px solid $border-color;
+    border-right: 1px solid $border-color;
+    background: transparent;
+    appearance: none;
+    padding: 0;
+    height: 100%;
+    font-weight: 600;
+    color: $text-primary;
+    
+    &::-webkit-inner-spin-button, 
+    &::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+  }
+}
+
+fa-icon.globe-icon, fa-icon.plane-icon, fa-icon.location-icon {
+  color: inherit;
+  font-size: inherit;
 }

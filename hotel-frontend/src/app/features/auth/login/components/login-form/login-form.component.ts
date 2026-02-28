@@ -1,6 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { LoginCredentials } from '../../../../../core/interfaces/login-credentials.interface';
 
 @Component({
   selector: 'app-login-form',
@@ -10,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginFormComponent {
   isLoading = input<boolean>(false);
-  loginSubmit = output<any>();
+  loginSubmit = output<LoginCredentials>();
 
   loginForm: FormGroup;
 

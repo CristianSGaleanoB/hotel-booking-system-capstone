@@ -2,7 +2,9 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Hotel } from '../../../core/interfaces/hotel.interface';
 import { SearchResult } from '../../../core/interfaces/searchResult.interface';
-import { Room } from '../room/room';
+import { RoomSuggestion } from '../../../core/interfaces/roomSuggestion.interface';
+import { Room as RoomInterface } from '../../../core/interfaces/room.interface';
+import { RoomComponent } from '../room/room';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { customPinIcon, customImageIcon, customBookIcon } from '../../../core/constants/custom-icons';
 import { RouterModule } from '@angular/router';
@@ -10,7 +12,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-hotel-card',
   standalone: true,
-  imports: [CommonModule, Room, FontAwesomeModule, RouterModule],
+  imports: [CommonModule, RoomComponent, FontAwesomeModule, RouterModule],
   templateUrl: './hotel-card.html',
   styleUrl: './hotel-card.scss',
 })
@@ -21,9 +23,9 @@ export class HotelCard {
   imageIcon = customImageIcon;
   bookIcon = customBookIcon;
   
-  get roomSuggestions(): any[] {
+  get roomSuggestions(): (RoomSuggestion | RoomInterface)[] {
     if ('rooms' in this.data && this.data.rooms) {
-      return this.data.rooms;
+      return this.data.rooms as (RoomSuggestion | RoomInterface)[];
     }
     return [];
   }

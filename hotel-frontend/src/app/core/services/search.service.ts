@@ -22,11 +22,11 @@ export class SearchService {
         this.isLoading.set(true);
         let params = new HttpParams();
         
-        const filterEntries = Object.entries(filters) as [keyof SearchFilters, any][];
+        const filterEntries = Object.entries(filters) as [keyof SearchFilters, string | number | Date | null | undefined][];
         
         filterEntries.forEach(([key, value]) => {
             if (value !== null && value !== undefined && value !== '') {
-                params = params.append(key, value.toString());
+                params = params.append(key, value instanceof Date ? value.toISOString() : value.toString());
             }
         });
 

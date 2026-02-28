@@ -5,9 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class ApiConfigService {
   private readonly baseUrl = 'http://localhost:3001';
-
   private readonly endpoints: Record<string, string> = {
     hotels: '/hotels',
+    rooms: '/rooms',
     search: '/search',
     auth: '/auth'
   };

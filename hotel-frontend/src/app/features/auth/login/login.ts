@@ -2,6 +2,7 @@ import { Component, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { AuthService } from '../../../core/services/auth.service';
+import { LoginCredentials } from '../../../core/interfaces/login-credentials.interface';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent {
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
 
-  onLogin(credentials: any) {
+  onLogin(credentials: LoginCredentials) {
     this.isLoading.set(true);
     
     this.authService.login(credentials).subscribe({

@@ -60,7 +60,7 @@
     @if (hasSuggestedRooms) {
         <div class="rooms-footer bg-gray-50/50 px-4 pb-3 pt-1">
             <div class="flex overflow-x-auto gap-3 pb-1 no-scrollbar">
-                @for (roomData of roomSuggestions; track roomData.id) {
+                @for (roomData of roomSuggestions; track $any(roomData).id || $any(roomData)._id) {
                     <div class="min-w-[220px]">
                         <app-room [room]="roomData"></app-room>
                     </div>

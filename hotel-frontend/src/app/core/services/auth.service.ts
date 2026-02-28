@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../app.constants';
 import { tap } from 'rxjs';
 
+import { LoginCredentials } from '../interfaces/login-credentials.interface';
+
 interface LoginResponse {
   bearer: string;
 }
@@ -21,7 +23,7 @@ export class AuthService {
     return localStorage.getItem('auth_token');
   }
 
-  login(credentials: any) {
+  login(credentials: LoginCredentials) {
     return this.http.post<LoginResponse>(`${API_URL}/auth/login`, credentials).pipe(
       tap(response => {
         if (response.bearer) {

@@ -5,12 +5,12 @@
         <h1>{{ h.name }}</h1>
       </div>
       <div class="location-row">
-        <i class="fas fa-map-marker-alt"></i>
+        <fa-icon [icon]="pinIcon" class="location-icon"></fa-icon>
         <span>{{ h.city }}</span>
       </div>
       <div class="description-row">
         <div class="globe-placeholder">
-          <i class="fas fa-globe"></i>
+          <fa-icon [icon]="globeIcon" class="globe-icon"></fa-icon>
         </div>
         <div class="description-text">
           <p><strong>Descripción:</strong> {{ h.description }}</p>
@@ -31,12 +31,12 @@
       <h4>Fechas</h4>
       <div class="box-content">
         <div class="date-item">
-          <i class="fas fa-plane-arrival"></i>
+          <fa-icon [icon]="planeArrivalIcon" class="plane-icon"></fa-icon>
           <span>Llegada</span>
           <span class="date-value">{{ searchContext()?.startDate || searchContext()?.checkIn || '1 de Enero, 2025' }}</span>
         </div>
         <div class="date-item">
-          <i class="fas fa-plane-departure"></i>
+          <fa-icon [icon]="planeDepartureIcon" class="plane-icon"></fa-icon>
           <span>Salida</span>
           <span class="date-value">{{ searchContext()?.endDate || searchContext()?.checkOut || '2 de Enero, 2025' }}</span>
         </div>
@@ -45,13 +45,21 @@
 
     <div class="summary-box guests-box">
       <h4>Cantidad de huéspedes</h4>
-      <div class="box-content">
-        <div class="guest-input">
-          <input type="number" [value]="searchContext()?.peopleCount || searchContext()?.guests || 1" readonly>
+      <div class="box-content guest-controls">
+        <div class="guest-input group-input">
+          <div class="stepper">
+            <button (click)="updateGuests('adults', false)">-</button>
+            <input type="number" [value]="adults()" readonly>
+            <button (click)="updateGuests('adults', true)">+</button>
+          </div>
           <span>Adultos</span>
         </div>
-        <div class="guest-input">
-          <input type="number" value="0" readonly>
+        <div class="guest-input group-input">
+          <div class="stepper">
+            <button (click)="updateGuests('children', false)">-</button>
+            <input type="number" [value]="children()" readonly>
+            <button (click)="updateGuests('children', true)">+</button>
+          </div>
           <span>Niños</span>
         </div>
       </div>
@@ -62,16 +70,37 @@
     <h3>Habitaciones disponibles</h3>
     <div class="rooms-container">
       <div class="rooms-grid">
-        <div class="room-card" *ngFor="let room of h.rooms">
+        <div class="room-card suggested-room" *ngFor="let room of suggestedRooms" 
+             [class.selected-room]="selectedRoomId() === room._id"
+             (click)="selectRoom(room._id)">
+             
           <div class="room-header">
             <h4>{{ room.type }}</h4>
             <div class="book-status">
-              <input type="radio" name="room-select">
+              <input type="radio" name="room-select" [checked]="selectedRoomId() === room._id">
               <label>Book</label>
             </div>
           </div>
           <div class="room-info">
-            <span class="capacity"><i class="fas fa-users"></i> Capacidad: {{ room.capacity }}</span>
+            <span class="capacity"><fa-icon [icon]="capacityIcon"></fa-icon> Capacidad: {{ room.capacity }}</span>
+            <span class="price">{{ room.price }}$</span>
+          </div>
+          <p class="room-description">{{ room.description || 'Descripción: Lorem Ipsum is simply dummy text of the printing and typesetting industry.' }}</p>
+        </div>
+
+        <div class="room-card" *ngFor="let room of otherRooms" 
+             [class.selected-room]="selectedRoomId() === room._id"
+             (click)="selectRoom(room._id)">
+             
+          <div class="room-header">
+            <h4>{{ room.type }}</h4>
+            <div class="book-status">
+              <input type="radio" name="room-select" [checked]="selectedRoomId() === room._id">
+              <label>Book</label>
+            </div>
+          </div>
+          <div class="room-info">
+            <span class="capacity"><fa-icon [icon]="capacityIcon"></fa-icon> Capacidad: {{ room.capacity }}</span>
             <span class="price">{{ room.price }}$</span>
           </div>
           <p class="room-description">{{ room.description || 'Descripción: Lorem Ipsum is simply dummy text of the printing and typesetting industry.' }}</p>
@@ -80,7 +109,7 @@
     </div>
   </section>
   <button class="fab-book">
-    <i class="fas fa-calendar-alt"></i>
+    <fa-icon [icon]="bookIcon"></fa-icon>
     <span>Book</span>
   </button>
 </div>
