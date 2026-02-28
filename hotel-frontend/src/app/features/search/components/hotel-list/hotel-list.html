@@ -1,5 +1,5 @@
 <div class="hotel-list-container flex flex-col gap-8">
-    @for (item of data; track (isSearchResult(item) ? item.hotel._id : item._id)) {
+    @for (item of data; track (isSearchResult(item) ? item.hotelId : item._id)) {
         <app-hotel-card [data]="item"></app-hotel-card>
     } @empty {
         <div class="empty-state p-12 text-center bg-white rounded-3xl border-2 border-dashed border-gray-200">

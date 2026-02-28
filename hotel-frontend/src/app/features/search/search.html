@@ -1,12 +1,12 @@
-<div class="search-page-layout grid grid-cols-1 lg:grid-cols-[18rem_1fr] h-full w-full overflow-hidden">
-    <aside class="search-sidebar-container bg-white border-r border-gray-100 overflow-y-auto overflow-x-hidden min-w-0 p-1.5rem">
+<div class="search-page-layout grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-1 h-full w-full overflow-hidden">
+    <aside class="search-sidebar-container bg-white border-x border-gray-200 overflow-y-auto overflow-x-hidden min-w-0 p-6 pt-16">
         <app-search-form 
             [cities]="getUniqueCities()"
             (search)="handleSearch($event)">
         </app-search-form>
     </aside>
 
-    <main class="content-area bg-gray-50 overflow-y-auto overflow-x-hidden min-w-0 px-2rem py-1.5rem">
+    <main class="content-area bg-gray-50 overflow-y-auto overflow-x-hidden min-w-0 px-2rem py-2rem">
         @if (errorMessage()) {
             <div class="bg-red-50 border border-red-200 text-red-700 px-1rem py-0.75rem rounded-lg mb-1rem text-sm">
                 {{ errorMessage() }}

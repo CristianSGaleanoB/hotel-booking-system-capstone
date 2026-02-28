@@ -15,8 +15,10 @@ export class SearchService {
 
     public searchResults = signal<SearchResult[]>([]);
     public isLoading = signal(false);
+    public lastFilters = signal<SearchFilters | null>(null);
 
     async search(filters: SearchFilters, hotelDescriptions?: Map<string, string>) {
+        this.lastFilters.set(filters);
         this.isLoading.set(true);
         let params = new HttpParams();
         

@@ -1,5 +1,16 @@
 <div class="booking-container">
   <h1>Hotel Booking</h1>
-  <p>Booking for Hotel ID: {{ hotelId }}</p>
+  <p>Booking for Hotel ID: <strong>{{ hotelId }}</strong></p>
+  
+  <div *ngIf="searchContext()" class="search-context">
+    <h3>Previous Search Context:</h3>
+    <ul>
+      <li><strong>City:</strong> {{ searchContext()?.city }}</li>
+      <li><strong>Check-in:</strong> {{ searchContext()?.startDate || searchContext()?.checkIn }}</li>
+      <li><strong>Check-out:</strong> {{ searchContext()?.endDate || searchContext()?.checkOut }}</li>
+      <li><strong>Guests:</strong> {{ searchContext()?.peopleCount || searchContext()?.guests }}</li>
+    </ul>
+  </div>
+
   <button class="confirm-btn">Confirm Booking</button>
 </div>

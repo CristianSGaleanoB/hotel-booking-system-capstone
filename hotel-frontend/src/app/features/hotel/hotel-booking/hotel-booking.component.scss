@@ -16,6 +16,32 @@
     color: #666;
   }
 
+  .search-context {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    text-align: left;
+
+    h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: #555;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        font-size: 0.9rem;
+        color: #777;
+        margin-bottom: 0.2rem;
+      }
+    }
+  }
+
   .confirm-btn {
     padding: 0.8rem 1.5rem;
     font-size: 1rem;

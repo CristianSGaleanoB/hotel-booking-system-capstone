@@ -1,11 +1,10 @@
-<div class="h-screen w-full bg-gray-50 grid grid-cols-[8.75rem_1fr] transition-all duration-300">
+<div class="h-screen w-full bg-gray-50 grid grid-cols-[8.75rem_1fr] gap-x-1 transition-all duration-300">
     
     <aside class="h-full bg-white shadow-xl z-20">
         <app-side-menu></app-side-menu>
     </aside>
 
     <main class="h-full overflow-hidden flex flex-col relative w-full">
-        <!-- Content Area -->
         <div class="flex-1 overflow-y-auto scroll-smooth">
             <router-outlet></router-outlet>
         </div>
