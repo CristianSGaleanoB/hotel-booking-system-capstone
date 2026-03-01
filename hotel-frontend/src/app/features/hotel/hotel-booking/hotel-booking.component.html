@@ -33,12 +33,12 @@
         <div class="date-item">
           <fa-icon [icon]="planeArrivalIcon" class="plane-icon"></fa-icon>
           <span>Llegada</span>
-          <span class="date-value">{{ searchContext()?.startDate || searchContext()?.checkIn || '1 de Enero, 2025' }}</span>
+          <input type="date" class="date-input focus:outline-none" [value]="startDate()" (change)="startDate.set($any($event.target).value)" />
         </div>
         <div class="date-item">
           <fa-icon [icon]="planeDepartureIcon" class="plane-icon"></fa-icon>
           <span>Salida</span>
-          <span class="date-value">{{ searchContext()?.endDate || searchContext()?.checkOut || '2 de Enero, 2025' }}</span>
+          <input type="date" class="date-input focus:outline-none" [value]="endDate()" (change)="endDate.set($any($event.target).value)" />
         </div>
       </div>
     </div>
