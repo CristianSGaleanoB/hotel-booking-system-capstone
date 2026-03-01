@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SearchService } from '../../../core/services/search.service';
 import { HotelService } from '../../../core/services/hotel.service';
 import { RoomService } from '../../../core/services/room.service';
+import { Router } from '@angular/router';
 import { Hotel } from '../../../core/interfaces/hotel.interface';
 import { Room } from '../../../core/interfaces/room.interface';
 import { customGlobeIcon, customArrivalIcon, customDepartureIcon, customPinIcon, customCapacityIcon, customBookIcon } from '../../../core/constants/custom-icons';
@@ -20,6 +21,7 @@ import { RoomComponent } from '../../../shared/components/room/room';
 })
 export class HotelBookingComponent implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private searchService = inject(SearchService);
   private hotelService = inject(HotelService);
   private roomService = inject(RoomService);
@@ -214,5 +216,30 @@ export class HotelBookingComponent implements OnInit {
         return [...selected, roomId];
       }
     });
+  }
+
+  get canBook(): boolean {
+    return this.userSelectedRooms().length > 0;
+  }
+
+  goToBookingDetail() {
+    if (!this.canBook) return;
+
+    const currentHotel = this.hotel();
+    if (!currentHotel) return;
+
+    const selectedIds = this.userSelectedRooms();
+    
+    const bookingData = {
+      hotelId: currentHotel._id,
+      hotelName: currentHotel.name,
+      roomIds: selectedIds,
+      startDate: this.startDate(),
+      endDate: this.endDate(),
+      adultCount: this.adults(),
+      childCount: this.children(),
+    };
+
+    this.router.navigate(['/bookings/detail'], { state: { bookingData } });
   }
 }

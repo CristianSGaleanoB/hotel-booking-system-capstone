@@ -1,1 +1,107 @@
-<p>booking-detail works!</p>
+<div class="checkout-container flex justify-center items-center min-h-screen bg-gray-50 p-4 font-sans text-gray-800">
+
+  @if (isLoading()) {
+    <div class="text-xl font-bold text-accent">Cargando Resumen...</div>
+  }
+
+  @else if (error()) {
+    <div class="summary-card bg-white rounded-xl shadow-xl border border-red-200 w-full max-w-xl p-10 text-center">
+      <p class="text-red-500 font-semibold text-lg mb-6">{{ error() }}</p>
+      <button (click)="goBack()" class="bg-accent text-white font-bold py-3 px-6 rounded-lg">Volver</button>
+    </div>
+  }
+
+  @else if (summary(); as info) {
+    <div class="summary-card bg-white rounded-xl shadow-xl border border-gray-200 w-full max-w-3xl p-8 md:p-10 relative">
+
+      <h2 class="text-center text-3xl font-bold text-accent mb-8">Detalle de la Reserva</h2>
+
+      <div class="flex justify-center mb-8">
+        <div class="border border-accent rounded-lg px-8 py-3 flex items-center gap-6 text-sm text-gray-600">
+          <div class="flex items-center gap-2">
+            <fa-icon [icon]="planeArrivalIcon" class="text-gray-400"></fa-icon>
+            <span class="font-medium text-gray-500">Llegada</span>
+            <span class="text-accent font-semibold">{{ info.checkInDate | date:"d 'de' MMMM y" }}</span>
+          </div>
+          <div class="h-6 border-l border-accent opacity-50"></div>
+          <div class="flex items-center gap-2">
+            <fa-icon [icon]="planeDepartureIcon" class="text-gray-400"></fa-icon>
+            <span class="font-medium text-gray-500">Salida</span>
+            <span class="text-accent font-semibold">{{ info.checkOutDate | date:"d 'de' MMMM y" }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+
+        <div class="border border-gray-200 rounded-lg p-5 shadow-sm">
+          <h4 class="text-primary font-bold mb-3 text-[15px]">Promociones Aplicadas</h4>
+          <ul class="text-sm text-gray-600 flex flex-col gap-2">
+            @for (promo of info.promotionsApplied; track promo) {
+              <li class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-accent inline-block flex-shrink-0"></span>
+                {{ promo }}
+              </li>
+            }
+            @if (info.promotionsApplied.length === 0) {
+              <li class="text-gray-400 italic">Sin promociones aplicadas</li>
+            }
+          </ul>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg p-5 shadow-sm">
+          <h4 class="text-primary font-bold mb-4 text-[15px]">Costo de la reserva</h4>
+          <div class="flex flex-col gap-2 text-sm text-gray-600">
+            <div class="flex justify-between">
+              <span>Costo:</span>
+              <span class="text-gray-800 font-medium">{{ info.baseCost }}$</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Descuento:</span>
+              <span class="text-gray-800 font-medium">{{ info.estimatedDiscount }}$</span>
+            </div>
+            <div class="flex justify-between font-semibold border-t border-gray-100 pt-2 mt-1">
+              <span>Costo Final:</span>
+              <span class="text-gray-800">{{ info.finalCost }}$</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mb-6">
+        <h4 class="text-accent font-bold text-lg mb-2">Habitaciones seleccionadas</h4>
+        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 ml-1 font-medium">
+          @for (room of info.roomsSelected; track room.id) {
+            <li>{{ room.type }} — Habitación #{{ room.roomNumber }} ({{ room.price }}$ / noche)</li>
+          }
+        </ul>
+      </div>
+
+      <div class="mb-10">
+        <h4 class="text-accent font-bold text-lg mb-2">Política de Cancelación</h4>
+        <div class="text-sm text-gray-800 font-medium leading-relaxed">
+          <p>- Las reservas se pueden cancelar hasta tres días antes de la fecha de reserva.</p>
+          <p>- Si intenta cancelar una reserva existente y la fecha de cancelación ha expirado, la transacción será rechazada y se le obligará a cubrir todos los pagos.</p>
+        </div>
+      </div>
+
+      @if (error()) {
+        <p class="text-red-500 text-sm text-center mb-4">{{ error() }}</p>
+      }
+
+      <div class="flex justify-end items-center gap-6">
+        <button (click)="goBack()" class="text-gray-600 font-medium hover:text-gray-800 transition-colors">
+          Cancelar
+        </button>
+        <button (click)="confirmBooking()" [disabled]="isConfirming()"
+          class="bg-accent hover:bg-opacity-90 transition-colors text-white font-bold py-3 px-6 rounded-lg shadow-md flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed">
+          {{ isConfirming() ? 'Confirmando...' : 'Confirmar Reserva' }}
+          <fa-icon [icon]="calendarIcon"></fa-icon>
+        </button>
+      </div>
+
+    </div>
+  }
+
+</div>

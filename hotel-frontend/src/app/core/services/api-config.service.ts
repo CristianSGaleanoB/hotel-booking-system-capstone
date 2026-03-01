@@ -9,7 +9,8 @@ export class ApiConfigService {
     hotels: '/hotels',
     rooms: '/rooms',
     search: '/search',
-    auth: '/auth'
+    auth: '/auth',
+    bookings: '/bookings'
   };
 
 

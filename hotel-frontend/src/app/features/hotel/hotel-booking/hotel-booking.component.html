@@ -92,10 +92,13 @@
       </div>
     </div>
   </section>
-  <button class="fab-book">
-    <fa-icon [icon]="bookIcon"></fa-icon>
-    <span>Book</span>
-  </button>
+
+  @if (canBook) {
+    <button class="fab-book" (click)="goToBookingDetail()">
+      <fa-icon [icon]="bookIcon"></fa-icon>
+      <span>Book</span>
+    </button>
+  }
 </div>
 
 <div class="loading-state" *ngIf="!hotel()">
