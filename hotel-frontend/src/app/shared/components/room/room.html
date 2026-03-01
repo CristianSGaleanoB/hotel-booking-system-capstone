@@ -7,12 +7,17 @@
         <div class="room-info-top flex justify-between items-start">
             <h3 class="room-name text-primary font-bold text-lg m-0">{{ room.type }}</h3>
             @if (showSelection) {
-                <div class="book-status flex items-center gap-2 border border-accent rounded-md px-3 py-1 text-accent font-semibold text-sm"
+                <button class="book-status flex items-center justify-center gap-1.5 border border-accent rounded-md px-3 py-1 text-sm font-bold transition-all w-[85px] h-[32px] cursor-pointer focus:outline-none"
                      [class.bg-accent]="isSelected"
-                     [class.text-white]="isSelected">
-                    <input type="radio" name="room-select" [checked]="isSelected" class="accent-accent">
-                    <label class="cursor-pointer">Book</label>
-                </div>
+                     [class.text-white]="isSelected"
+                     [class.bg-transparent]="!isSelected"
+                     [class.text-accent]="!isSelected"
+                     (click)="onSelect(); $event.stopPropagation()">
+                    @if (isSelected) {
+                        <fa-icon [icon]="checkIcon"></fa-icon>
+                    }
+                    <span>Book</span>
+                </button>
             }
         </div>
 

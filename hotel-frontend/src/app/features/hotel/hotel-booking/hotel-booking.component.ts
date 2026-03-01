@@ -30,7 +30,7 @@ export class HotelBookingComponent implements OnInit {
 
   adults = signal(1);
   children = signal(0);
-  selectedRoomId = signal<string | null>(null);
+  userSelectedRooms = signal<string[]>([]);
 
   globeIcon = customGlobeIcon;
   planeArrivalIcon = customArrivalIcon;
@@ -124,6 +124,14 @@ export class HotelBookingComponent implements OnInit {
   }
 
   selectRoom(roomId: string | undefined) {
-    if(roomId) this.selectedRoomId.set(roomId);
+    if (!roomId) return;
+    
+    this.userSelectedRooms.update(selected => {
+      if (selected.includes(roomId)) {
+        return selected.filter(id => id !== roomId);
+      } else {
+        return [...selected, roomId];
+      }
+    });
   }
 }
