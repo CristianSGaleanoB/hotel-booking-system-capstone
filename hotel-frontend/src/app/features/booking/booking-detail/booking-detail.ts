@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BookingService } from '../../../core/services/booking.service';
 import { BookingSummaryRequest, BookingSummaryResponse } from '../../../core/interfaces/booking.interface';
+import { ApiError } from '../../../core/interfaces/api-error.interface';
 import { customArrivalIcon, customDepartureIcon, customBookIcon } from '../../../core/constants/custom-icons';
 
 @Component({
@@ -20,10 +21,11 @@ export class BookingDetail implements OnInit {
   summary = signal<BookingSummaryResponse | null>(null);
   isLoading = signal<boolean>(true);
   error = signal<string | null>(null);
-  isConfirming = signal<boolean>(false);
+  isSubmitting = signal<boolean>(false);
 
   bookingData: BookingSummaryRequest | null = null;
   hotelName: string = '';
+  hotelId: string = '';
 
   planeArrivalIcon = customArrivalIcon;
   planeDepartureIcon = customDepartureIcon;
@@ -41,6 +43,7 @@ export class BookingDetail implements OnInit {
         childCount: state.bookingData.childCount
       };
       this.hotelName = state.bookingData.hotelName || 'Hotel';
+      this.hotelId = state.bookingData.hotelId || '';
     }
   }
 
@@ -55,16 +58,20 @@ export class BookingDetail implements OnInit {
       const res = await this.bookingService.getSummary(this.bookingData);
       this.summary.set(res);
     } catch (err: any) {
-      console.error('Failed to load booking summary:', err);
-      const message = err?.error?.message || err?.message || 'Error al cargar el resumen de reserva.';
+      const apiError = err as ApiError;
+      const message = apiError?.message || 'Error al cargar el resumen de reserva.';
       this.error.set(message);
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  goBack() {
-    window.history.back();
+  cancel() {
+    if (this.hotelId) {
+      this.router.navigate(['/hotel', this.hotelId, 'book']);
+    } else {
+      window.history.back();
+    }
   }
 
   async confirmBooking() {
@@ -73,20 +80,32 @@ export class BookingDetail implements OnInit {
     if (!current) return;
 
     this.error.set(null);
-    this.isConfirming.set(true);
+    this.isSubmitting.set(true);
 
     try {
       await this.bookingService.confirmBooking({
         ...this.bookingData,
         totalPrice: current.finalCost
       });
-      this.router.navigate(['/']);
+      this.router.navigate(['/user']);
     } catch (err: any) {
-      console.error('Failed to confirm booking:', err);
-      const message = err?.error?.message || 'Error al confirmar la reserva.';
-      this.error.set(message);
+      const apiError = err as ApiError;
+      if (apiError.status === 409) {
+        this.error.set(
+          '¡Error! Las habitaciones seleccionadas ya no están disponibles. ' +
+          'Por favor, regrese a la vista de reserva para una nueva selección.'
+        );
+        setTimeout(() => {
+          if (this.hotelId) {
+            this.router.navigate(['/hotel', this.hotelId, 'book']);
+          }
+        }, 3000);
+      } else {
+        const message = apiError?.message || 'Error al confirmar la reserva.';
+        this.error.set(message);
+      }
     } finally {
-      this.isConfirming.set(false);
+      this.isSubmitting.set(false);
     }
   }
 }

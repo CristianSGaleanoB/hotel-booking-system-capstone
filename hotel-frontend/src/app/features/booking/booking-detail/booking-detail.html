@@ -85,16 +85,18 @@
       </div>
 
       @if (error()) {
-        <p class="text-red-500 text-sm text-center mb-4">{{ error() }}</p>
+        <div class="bg-red-50 border border-red-400 rounded-lg px-5 py-4 mb-4 text-sm text-red-700 font-semibold">
+           {{ error() }}
+        </div>
       }
 
       <div class="flex justify-end items-center gap-6">
-        <button (click)="goBack()" class="text-gray-600 font-medium hover:text-gray-800 transition-colors">
+        <button (click)="cancel()" class="text-gray-600 font-medium hover:text-gray-800 transition-colors">
           Cancelar
         </button>
-        <button (click)="confirmBooking()" [disabled]="isConfirming()"
+        <button (click)="confirmBooking()" [disabled]="isSubmitting()"
           class="bg-accent hover:bg-opacity-90 transition-colors text-white font-bold py-3 px-6 rounded-lg shadow-md flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed">
-          {{ isConfirming() ? 'Confirmando...' : 'Confirmar Reserva' }}
+          {{ isSubmitting() ? 'Confirmando...' : 'Confirmar Reserva' }}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
       </div>
