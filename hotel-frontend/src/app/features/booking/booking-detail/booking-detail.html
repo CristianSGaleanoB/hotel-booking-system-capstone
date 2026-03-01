@@ -34,20 +34,19 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
 
-        <div class="border border-gray-200 rounded-lg p-5 shadow-sm">
-          <h4 class="text-primary font-bold mb-3 text-[15px]">Promociones Aplicadas</h4>
-          <ul class="text-sm text-gray-600 flex flex-col gap-2">
-            @for (promo of info.promotionsApplied; track promo) {
-              <li class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-accent inline-block flex-shrink-0"></span>
-                {{ promo }}
-              </li>
-            }
-            @if (info.promotionsApplied.length === 0) {
-              <li class="text-gray-400 italic">Sin promociones aplicadas</li>
-            }
-          </ul>
-        </div>
+        @if (info.promotionsApplied.length > 0) {
+          <div class="border border-gray-200 rounded-lg p-5 shadow-sm">
+            <h4 class="text-primary font-bold mb-3 text-[15px]">Promociones Aplicadas</h4>
+            <ul class="text-sm text-gray-600 flex flex-col gap-2">
+              @for (promo of info.promotionsApplied; track promo) {
+                <li class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-accent inline-block flex-shrink-0"></span>
+                  {{ promo }}
+                </li>
+              }
+            </ul>
+          </div>
+        }
 
         <div class="border border-gray-200 rounded-lg p-5 shadow-sm">
           <h4 class="text-primary font-bold mb-4 text-[15px]">Costo de la reserva</h4>
@@ -81,8 +80,7 @@
       <div class="mb-10">
         <h4 class="text-accent font-bold text-lg mb-2">Política de Cancelación</h4>
         <div class="text-sm text-gray-800 font-medium leading-relaxed">
-          <p>- Las reservas se pueden cancelar hasta tres días antes de la fecha de reserva.</p>
-          <p>- Si intenta cancelar una reserva existente y la fecha de cancelación ha expirado, la transacción será rechazada y se le obligará a cubrir todos los pagos.</p>
+          <p>{{ info.cancellationPolicy }}</p>
         </div>
       </div>
 
