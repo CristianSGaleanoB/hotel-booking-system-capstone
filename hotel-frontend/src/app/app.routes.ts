@@ -21,6 +21,10 @@ export const routes: Routes = [
             {
                 path: 'hotel',
                 loadChildren: () => import('./features/hotel/hotel.routes').then(m => m.HOTEL_ROUTES)
+            },
+            {
+                path: 'bookings',
+                loadChildren: () => import('./features/booking/booking.routes').then(m => m.BOOKING_ROUTES)
             }
         ]
     },
