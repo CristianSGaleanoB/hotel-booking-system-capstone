@@ -8,11 +8,12 @@ import { RoomService } from '../../../core/services/room.service';
 import { Hotel } from '../../../core/interfaces/hotel.interface';
 import { Room } from '../../../core/interfaces/room.interface';
 import { customGlobeIcon, customArrivalIcon, customDepartureIcon, customPinIcon, customCapacityIcon, customBookIcon } from '../../../core/constants/custom-icons';
+import { RoomComponent } from '../../../shared/components/room/room';
 
 @Component({
   selector: 'app-hotel-booking',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, RoomComponent],
   templateUrl: './hotel-booking.component.html',
   styleUrl: './hotel-booking.component.scss'
 })

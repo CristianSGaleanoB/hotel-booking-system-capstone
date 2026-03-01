@@ -70,41 +70,25 @@
     <h3>Habitaciones disponibles</h3>
     <div class="rooms-container">
       <div class="rooms-grid">
-        <div class="room-card suggested-room" *ngFor="let room of suggestedRooms" 
-             [class.selected-room]="selectedRoomId() === room._id"
-             (click)="selectRoom(room._id)">
-             
-          <div class="room-header">
-            <h4>{{ room.type }}</h4>
-            <div class="book-status">
-              <input type="radio" name="room-select" [checked]="selectedRoomId() === room._id">
-              <label>Book</label>
-            </div>
-          </div>
-          <div class="room-info">
-            <span class="capacity"><fa-icon [icon]="capacityIcon"></fa-icon> Capacidad: {{ room.capacity }}</span>
-            <span class="price">{{ room.price }}$</span>
-          </div>
-          <p class="room-description">{{ room.description || 'Descripción: Lorem Ipsum is simply dummy text of the printing and typesetting industry.' }}</p>
-        </div>
+        @for (room of suggestedRooms; track room._id) {
+            <app-room 
+                [room]="room" 
+                [isSuggested]="true" 
+                [showSelection]="true" 
+                [isSelected]="selectedRoomId() === room._id"
+                (select)="selectRoom(room._id)">
+            </app-room>
+        }
 
-        <div class="room-card" *ngFor="let room of otherRooms" 
-             [class.selected-room]="selectedRoomId() === room._id"
-             (click)="selectRoom(room._id)">
-             
-          <div class="room-header">
-            <h4>{{ room.type }}</h4>
-            <div class="book-status">
-              <input type="radio" name="room-select" [checked]="selectedRoomId() === room._id">
-              <label>Book</label>
-            </div>
-          </div>
-          <div class="room-info">
-            <span class="capacity"><fa-icon [icon]="capacityIcon"></fa-icon> Capacidad: {{ room.capacity }}</span>
-            <span class="price">{{ room.price }}$</span>
-          </div>
-          <p class="room-description">{{ room.description || 'Descripción: Lorem Ipsum is simply dummy text of the printing and typesetting industry.' }}</p>
-        </div>
+        @for (room of otherRooms; track room._id) {
+            <app-room 
+                [room]="room" 
+                [isSuggested]="false" 
+                [showSelection]="true" 
+                [isSelected]="selectedRoomId() === room._id"
+                (select)="selectRoom(room._id)">
+            </app-room>
+        }
       </div>
     </div>
   </section>

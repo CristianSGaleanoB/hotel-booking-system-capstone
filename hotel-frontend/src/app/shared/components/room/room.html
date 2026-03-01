@@ -1,18 +1,31 @@
-<div class="room-container bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="room-container bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer relative"
+     [class.selected-room]="isSelected"
+     [class.suggested-room]="isSuggested"
+     (click)="onSelect()">
+    
     <div class="room-header flex flex-col gap-2">
         <div class="room-info-top flex justify-between items-start">
-            <h3 class="room-name text-primary font-normal text-sm">{{ room.type }}</h3>
+            <h3 class="room-name text-primary font-bold text-lg m-0">{{ room.type }}</h3>
+            @if (showSelection) {
+                <div class="book-status flex items-center gap-2 border border-accent rounded-md px-3 py-1 text-accent font-semibold text-sm"
+                     [class.bg-accent]="isSelected"
+                     [class.text-white]="isSelected">
+                    <input type="radio" name="room-select" [checked]="isSelected" class="accent-accent">
+                    <label class="cursor-pointer">Book</label>
+                </div>
+            }
         </div>
 
-        <div class="room-meta flex items-center justify-between mt-0.5">
-            <span class="capacity flex items-center gap-1.5 text-gray-500 font-bold text-[10px]">
-                <fa-icon [icon]="capacityIcon" class="text-primary text-xs"></fa-icon>
+        <div class="room-meta flex items-center gap-4 mt-1 text-primary font-semibold text-sm">
+            <span class="capacity flex items-center gap-1.5">
+                <fa-icon [icon]="capacityIcon" class="text-xs"></fa-icon>
                 Capacidad: {{ room.capacity }}
             </span>
+            <span class="price">{{ room.price }}$</span>
         </div>
     </div>
 
-    <p class="room-description text-gray-400 text-[10px] leading-tight mt-2 line-clamp-2">
-        {{ room.description || 'Una habitación confortable diseñada para tu descanso.' }}
+    <p class="room-description text-gray-500 text-sm leading-relaxed mt-3 m-0 line-clamp-2">
+        {{ room.description || 'Descripción: Lorem Ipsum is simply dummy text of the printing and typesetting industry.' }}
     </p>
 </div>

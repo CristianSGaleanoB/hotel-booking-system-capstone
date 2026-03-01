@@ -6,6 +6,14 @@
         border-color: theme('colors.accent');
         box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     }
+
+    &.suggested-room {
+        border: 2px solid theme('colors.accent');
+    }
+
+    &.selected-room {
+        border-color: theme('colors.accent'); 
+    }
 }
 
 .room-name {

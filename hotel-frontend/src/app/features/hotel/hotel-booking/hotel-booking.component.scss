@@ -180,75 +180,9 @@ $card-border: #E5E7EB;
       overflow-y: auto;
 
       .rooms-grid {
+        display: grid;
         grid-template-columns: 1fr 1fr;
-      }
-
-      .room-card {
-        background: white;
-        border: 1px solid $border-color;
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        transition: border-color 0.2s;
-
-        &:hover {
-           border-color: $accent-color;
-        }
-
-        .room-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 0.5rem;
-
-          h4 {
-            font-size: 1.3rem;
-            margin: 0;
-            color: $text-primary;
-            font-weight: 600;
-          }
-
-          .book-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: 1px solid $accent-color;
-            border-radius: 6px;
-            padding: 0.3rem 1rem;
-            color: $accent-color;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-
-            input[type="radio"] {
-              accent-color: $accent-color;
-            }
-
-            &.selected {
-              background-color: $accent-color;
-              color: white;
-              i { color: white; }
-            }
-          }
-        }
-
-        .room-info {
-          display: flex;
-          gap: 1rem;
-          margin-bottom: 1rem;
-          font-size: 0.9rem;
-          font-weight: 600;
-          color: $text-primary;
-
-          .capacity i { color: $text-primary; font-size: 0.8rem; }
-        }
-
-        .room-description {
-          font-size: 0.85rem;
-          color: #666;
-          line-height: 1.5;
-          margin: 0;
-        }
+        gap: 1.5rem;
       }
     }
   }
@@ -287,30 +221,6 @@ $card-border: #E5E7EB;
   color: $text-secondary;
 }
 
-.suggested-room {
-  border: 2px solid $accent-color ;
-  background-color: #fefce8 ;
-  position: relative;
-  
-  &::before {
-    content: 'Sugerida';
-    position: absolute;
-    top: -10px;
-    right: 15px;
-    background: $accent-color;
-    color: white;
-    font-size: 0.7rem;
-    font-weight: bold;
-    padding: 2px 8px;
-    border-radius: 12px;
-    text-transform: uppercase;
-  }
-}
-
-.selected-room {
-  border-color: #f97316 ; 
-  background-color: #fffaf5 ; 
-}
 
 .stepper {
   display: flex;
