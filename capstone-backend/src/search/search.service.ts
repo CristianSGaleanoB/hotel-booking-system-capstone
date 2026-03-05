@@ -47,7 +47,6 @@ export class SearchService {
         $match: {
           hotel: { $in: hotelIds },
           isAvailable: true,
-          capacity: { $gte: peopleCount },
           ...(Object.keys(priceQuery).length ? { price: priceQuery } : {}),
         },
       },
@@ -92,44 +91,55 @@ export class SearchService {
       const hotelRooms = roomsByHotel[hotel._id.toString()] || [];
       if (hotelRooms.length === 0) continue;
 
+      const totalCapacity = hotelRooms.reduce((sum, r) => sum + r.capacity, 0);
+      if (totalCapacity < peopleCount) continue;
+
       const combinations = this.findCombinations(hotelRooms, peopleCount);
+      if (combinations.length === 0) continue;
 
-      const optionPromises = combinations.map(async (combo, index) => {
-        const rawTotalPrice = combo.reduce((sum, r) => sum + r.price, 0);
+      combinations.sort((a, b) => {
+        const capA = a.reduce((sum, r) => sum + r.capacity, 0);
+        const capB = b.reduce((sum, r) => sum + r.capacity, 0);
+        if (capA !== capB) return capA - capB;
 
-        const promoResult = await this.promotionsService.applyPromotions({
-          adultCount: peopleCount,
-          childCount: 0,
-          city: hotel.city,
-          startDate: new Date(startDate),
-          endDate: new Date(endDate),
-          basePrice: rawTotalPrice,
-          festiveCalendar: festiveCalendar as FestiveCalendar,
-        });
-
-        const mappedPromotions = promoResult.promotionsApplied.map((promo) => ({
-          name: promo,
-        }));
-
-        return {
-          hotelId: hotel._id,
-          hotelName: hotel.name,
-          location: hotel.city,
-          optionLabel: `Option ${index + 1} (${peopleCount} People)`,
-          rooms: combo.map((r) => ({
-            id: r._id,
-            type: r.type,
-            price: r.price,
-            capacity: r.capacity,
-          })),
-          totalPrice: promoResult.finalPrice,
-          available: true,
-          appliedPromotions: mappedPromotions,
-        };
+        const priceA = a.reduce((sum, r) => sum + r.price, 0);
+        const priceB = b.reduce((sum, r) => sum + r.price, 0);
+        return priceA - priceB;
       });
 
-      const options = await Promise.all(optionPromises);
-      results.push(...options);
+      const bestCombo = combinations[0];
+      const rawTotalPrice = bestCombo.reduce((sum, r) => sum + r.price, 0);
+
+      const promoResult = await this.promotionsService.applyPromotions({
+        adultCount: peopleCount,
+        childCount: 0,
+        city: hotel.city,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        basePrice: rawTotalPrice,
+        festiveCalendar: festiveCalendar as FestiveCalendar,
+      });
+
+      const mappedPromotions = promoResult.promotionsApplied.map((promo) => ({
+        name: promo,
+      }));
+
+      results.push({
+        hotelId: hotel._id,
+        hotelName: hotel.name,
+        location: hotel.city,
+        // Return exactly ONE option per hotel, with ONLY the best combination rooms inside
+        optionLabel: `Available for ${peopleCount} People`,
+        rooms: bestCombo.map((r) => ({
+          id: r._id,
+          type: r.type,
+          price: r.price,
+          capacity: r.capacity,
+        })),
+        totalPrice: promoResult.finalPrice,
+        available: true,
+        appliedPromotions: mappedPromotions,
+      });
     }
 
     return results;
@@ -158,7 +168,7 @@ export class SearchService {
       }
 
       for (let i = startIndex; i < sortedRooms.length; i++) {
-        if (results.length >= 3) return;
+        if (results.length >= 20) return; // Expand search limit to allow finding better fits
 
         currentCombo.push(sortedRooms[i]);
         backtrack(
