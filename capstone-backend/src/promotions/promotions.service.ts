@@ -5,56 +5,66 @@ import { FestiveCalendar } from './entities/festive-calendar.schema';
 
 @Injectable()
 export class PromotionsService {
-    constructor(
-        @InjectModel(FestiveCalendar.name) private readonly festiveModel: Model<FestiveCalendar>,
-    ) {}
+  constructor(
+    @InjectModel(FestiveCalendar.name)
+    private readonly festiveModel: Model<FestiveCalendar>,
+  ) {}
 
-    /**
-     * Calculates and applies various promotions (kids, group, festive) to the base price.
-     * @param data Booking information needed for promotion calculation
-     * @returns Object containing final price, total discount, and list of applied promotions
-     */
-    async applyPromotions( data: { adultCount: number, childCount: number,
-        city: string, startDate: Date, endDate: Date, basePrice: number}) {
-            let totalDiscountMoney = 0;
-            let totalDiscountPercentage = 0;
-            let promotionsApplied: string[] = [];
+  /**
+   * Calculates and applies various promotions (kids, group, festive) to the base price.
+   * @param data Booking information needed for promotion calculation
+   * @returns Object containing final price, total discount, and list of applied promotions
+   */
+  async applyPromotions(data: {
+    adultCount: number;
+    childCount: number;
+    city: string;
+    startDate: Date;
+    endDate: Date;
+    basePrice: number;
+    festiveCalendar?: FestiveCalendar;
+  }) {
+    let totalDiscountMoney = 0;
+    let totalDiscountPercentage = 0;
+    const promotionsApplied: string[] = [];
 
-            if (data.childCount > 0 ) {
-                const totalPeople = data.adultCount + data.childCount;
-                const pricePerPerson = data.basePrice / totalPeople;
-                const kidsDiscount = pricePerPerson * data.childCount;
+    if (data.childCount > 0) {
+      const totalPeople = data.adultCount + data.childCount;
+      const pricePerPerson = data.basePrice / totalPeople;
+      const kidsDiscount = pricePerPerson * data.childCount;
 
-                totalDiscountMoney += kidsDiscount;
-                promotionsApplied.push(`Kids Discount (${data.childCount} kids)`);
-            }
-            
-            if(data.adultCount > 8) {
-                totalDiscountPercentage += 0.10;
-                promotionsApplied.push(`Group Discount (10%)`);
-            }
+      totalDiscountMoney += kidsDiscount;
+      promotionsApplied.push(`Kids Discount (${data.childCount} kids)`);
+    }
 
-            const festive = await this.festiveModel.findOne({
-                city: data.city,
-                startDate: {
-                    $gte: data.startDate,
-                    $lte: data.endDate
-                }
-            })
+    if (data.adultCount > 8) {
+      totalDiscountPercentage += 0.1;
+      promotionsApplied.push(`Group Discount (10%)`);
+    }
 
-            if(festive) {
-                totalDiscountPercentage += festive.discountPercentage / 100;
-                promotionsApplied.push(`Festive Discount (${festive.name})`);
-            }
+    const festive =
+      data.festiveCalendar ||
+      (await this.festiveModel.findOne({
+        city: data.city,
+        startDate: {
+          $gte: data.startDate,
+          $lte: data.endDate,
+        },
+      }));
 
-            const discountFromPercentage = data.basePrice * totalDiscountPercentage;
-            const finalPrice = data.basePrice - discountFromPercentage - totalDiscountMoney;
+    if (festive) {
+      totalDiscountPercentage += festive.discountPercentage / 100;
+      promotionsApplied.push(`Festive Discount (${festive.name})`);
+    }
 
-            return {
-                finalPrice: finalPrice < 0 ? 0 : finalPrice,
-                totalDiscount: discountFromPercentage + totalDiscountMoney,
-                promotionsApplied
-            }
+    const discountFromPercentage = data.basePrice * totalDiscountPercentage;
+    const finalPrice =
+      data.basePrice - discountFromPercentage - totalDiscountMoney;
 
-        }
+    return {
+      finalPrice: finalPrice < 0 ? 0 : finalPrice,
+      totalDiscount: discountFromPercentage + totalDiscountMoney,
+      promotionsApplied,
+    };
+  }
 }

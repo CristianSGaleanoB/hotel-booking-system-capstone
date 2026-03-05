@@ -5,6 +5,10 @@ import { SearchController } from './search.controller';
 import { Room, RoomSchema } from '../rooms/entities/room.entity';
 import { Hotel, HotelSchema } from '../hotels/entities/hotel.entity';
 import { Booking, BookingSchema } from '../bookings/entities/booking.entity';
+import {
+  FestiveCalendar,
+  FestiveCalendarSchema,
+} from '../promotions/entities/festive-calendar.schema';
 import { PromotionsModule } from '../promotions/promotions.module';
 
 @Module({
@@ -13,6 +17,7 @@ import { PromotionsModule } from '../promotions/promotions.module';
       { name: Room.name, schema: RoomSchema },
       { name: Hotel.name, schema: HotelSchema },
       { name: Booking.name, schema: BookingSchema },
+      { name: FestiveCalendar.name, schema: FestiveCalendarSchema },
     ]),
     PromotionsModule,
   ],

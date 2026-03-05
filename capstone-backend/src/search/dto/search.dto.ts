@@ -1,6 +1,13 @@
-import { IsDateString, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsDateString,
+  IsInt,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsAfter } from 'src/common/decorators/is-after.decorator';
 
 export class SearchDto {
   @ApiProperty({ description: 'The check-in date', example: '2026-05-10' })
@@ -9,6 +16,9 @@ export class SearchDto {
 
   @ApiProperty({ description: 'The check-out date', example: '2026-05-15' })
   @IsDateString()
+  @IsAfter('startDate', {
+    message: 'The end date must be after the start date',
+  })
   endDate: string;
 
   @ApiProperty({ description: 'Total number of guests', example: 2 })

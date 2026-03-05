@@ -10,6 +10,6 @@ import { Room, RoomSchema } from './entities/room.entity';
   ],
   controllers: [RoomsController],
   providers: [RoomsService],
-  exports: [RoomsService, MongooseModule], 
+  exports: [RoomsService, MongooseModule],
 })
 export class RoomsModule {}

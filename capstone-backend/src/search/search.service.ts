@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Room } from '../rooms/entities/room.entity';
 import { Hotel } from '../hotels/entities/hotel.entity';
 import { Booking } from '../bookings/entities/booking.entity';
 import { SearchDto } from './dto/search.dto';
 import { SearchOption } from './interfaces/search-result.interface';
 import { PromotionsService } from '../promotions/promotions.service';
+import { FestiveCalendar } from '../promotions/entities/festive-calendar.schema';
 
 @Injectable()
 export class SearchService {
@@ -14,42 +15,73 @@ export class SearchService {
     @InjectModel(Room.name) private roomModel: Model<Room>,
     @InjectModel(Hotel.name) private hotelModel: Model<Hotel>,
     @InjectModel(Booking.name) private bookingModel: Model<Booking>,
+    @InjectModel(FestiveCalendar.name)
+    private festiveModel: Model<FestiveCalendar>,
     private promotionsService: PromotionsService,
   ) {}
 
   async findOptions(searchDto: SearchDto) {
-    const { startDate, endDate, peopleCount, city, minPrice, maxPrice } = searchDto;
+    const { startDate, endDate, peopleCount, city, minPrice, maxPrice } =
+      searchDto;
 
-    const hotels = await this.hotelModel.find({ city, isActive: true }).exec();
+    const hotels = await this.hotelModel
+      .find({ city, isActive: true })
+      .select('_id name city')
+      .exec();
     const hotelIds = hotels.map((h) => h._id);
 
-    const priceQuery: Record<string, number> = {};
+    const festiveCalendar = await this.festiveModel.findOne({
+      city,
+      startDate: {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      },
+    });
+
+    const priceQuery: Record<string, any> = {};
     if (minPrice !== undefined) priceQuery['$gte'] = minPrice;
     if (maxPrice !== undefined) priceQuery['$lte'] = maxPrice;
 
-    const rooms = await this.roomModel
-      .find({
-        hotel: { $in: hotelIds },
-        isAvailable: true,
-        ...(Object.keys(priceQuery).length ? { price: priceQuery } : {}),
-      })
-      .exec();
+    const availableRooms = await this.roomModel.aggregate([
+      {
+        $match: {
+          hotel: { $in: hotelIds },
+          isAvailable: true,
+          capacity: { $gte: peopleCount },
+          ...(Object.keys(priceQuery).length ? { price: priceQuery } : {}),
+        },
+      },
+      {
+        $lookup: {
+          from: 'bookings',
+          let: { roomId: '$_id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $in: ['$$roomId', '$rooms'] },
+                    { $eq: ['$status', 'CONFIRMED'] },
+                    { $lt: ['$startDate', new Date(endDate)] },
+                    { $gt: ['$endDate', new Date(startDate)] },
+                  ],
+                },
+              },
+            },
+          ],
+          as: 'overlappingBookings',
+        },
+      },
+      {
+        $match: {
+          overlappingBookings: { $size: 0 },
+        },
+      },
+    ]);
 
-    const overlappingBookings = await this.bookingModel.find({
-      status: 'CONFIRMED',
-      $or: [
-        { startDate: { $lt: new Date(endDate) }, endDate: { $gt: new Date(startDate) } },
-      ],
-    }).exec();
-
-    const bookedRoomIds = overlappingBookings.flatMap((b) => b.rooms.map(r => r.toString()));
-    
-    const availableRooms = rooms
-      .filter((r) => !bookedRoomIds.includes(r._id.toString()))
-      .filter((r) => r.capacity <= peopleCount * 2); 
     const roomsByHotel: Record<string, Room[]> = {};
     availableRooms.forEach((r) => {
-      const hotelId = r.hotel.toString();
+      const hotelId = (r.hotel as Types.ObjectId).toString();
       if (!roomsByHotel[hotelId]) roomsByHotel[hotelId] = [];
       roomsByHotel[hotelId].push(r);
     });
@@ -61,7 +93,7 @@ export class SearchService {
       if (hotelRooms.length === 0) continue;
 
       const combinations = this.findCombinations(hotelRooms, peopleCount);
-      
+
       const optionPromises = combinations.map(async (combo, index) => {
         const rawTotalPrice = combo.reduce((sum, r) => sum + r.price, 0);
 
@@ -71,16 +103,19 @@ export class SearchService {
           city: hotel.city,
           startDate: new Date(startDate),
           endDate: new Date(endDate),
-          basePrice: rawTotalPrice
+          basePrice: rawTotalPrice,
+          festiveCalendar: festiveCalendar as FestiveCalendar,
         });
 
-        const mappedPromotions = promoResult.promotionsApplied.map(promo => ({ name: promo }));
+        const mappedPromotions = promoResult.promotionsApplied.map((promo) => ({
+          name: promo,
+        }));
 
         return {
           hotelId: hotel._id,
           hotelName: hotel.name,
           location: hotel.city,
-          optionLabel: `Opción ${index + 1} (${peopleCount} Personas)`,
+          optionLabel: `Option ${index + 1} (${peopleCount} People)`,
           rooms: combo.map((r) => ({
             id: r._id,
             type: r.type,
@@ -89,7 +124,7 @@ export class SearchService {
           })),
           totalPrice: promoResult.finalPrice,
           available: true,
-          appliedPromotions: mappedPromotions
+          appliedPromotions: mappedPromotions,
         };
       });
 
@@ -109,22 +144,28 @@ export class SearchService {
    */
   private findCombinations(rooms: Room[], target: number): Room[][] {
     const results: Room[][] = [];
-    
+
     const sortedRooms = [...rooms].sort((a, b) => b.capacity - a.capacity);
 
-    const backtrack = (startIndex: number, currentCombo: Room[], currentCapacity: number) => {
-      // If we reached or exceeded the target, we have a valid combination
+    const backtrack = (
+      startIndex: number,
+      currentCombo: Room[],
+      currentCapacity: number,
+    ) => {
       if (currentCapacity >= target) {
         results.push([...currentCombo]);
         return;
       }
 
       for (let i = startIndex; i < sortedRooms.length; i++) {
-        // Limit to top 3 combinations for brevity
         if (results.length >= 3) return;
 
         currentCombo.push(sortedRooms[i]);
-        backtrack(i + 1, currentCombo, currentCapacity + sortedRooms[i].capacity);
+        backtrack(
+          i + 1,
+          currentCombo,
+          currentCapacity + sortedRooms[i].capacity,
+        );
         currentCombo.pop();
       }
     };

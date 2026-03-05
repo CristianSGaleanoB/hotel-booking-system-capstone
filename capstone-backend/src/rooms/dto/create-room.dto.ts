@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsString, IsNumber, IsEnum, IsBoolean, IsMongoId } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsNumber,
+  IsEnum,
+  IsBoolean,
+  IsMongoId,
+} from 'class-validator';
 import { RoomType } from '../entities/room.entity';
 
 export class CreateRoomDto {

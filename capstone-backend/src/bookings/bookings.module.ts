@@ -12,7 +12,7 @@ import { PromotionsModule } from 'src/promotions/promotions.module';
       { name: Booking.name, schema: BookingSchema },
       { name: Room.name, schema: RoomSchema },
     ]),
-    PromotionsModule
+    PromotionsModule,
   ],
   controllers: [BookingsController],
   providers: [BookingsService],

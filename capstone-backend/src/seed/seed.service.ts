@@ -10,7 +10,8 @@ export class SeedService {
   constructor(
     @InjectModel(Hotel.name) private readonly hotelModel: Model<Hotel>,
     @InjectModel(Room.name) private readonly roomModel: Model<Room>,
-    @InjectModel(FestiveCalendar.name) private readonly festiveModel: Model<FestiveCalendar>,
+    @InjectModel(FestiveCalendar.name)
+    private readonly festiveModel: Model<FestiveCalendar>,
   ) {}
 
   async runSeed() {
@@ -60,10 +61,38 @@ export class SeedService {
     const rooms: Partial<Room>[] = [];
     hotels.forEach((hotel, index) => {
       rooms.push(
-        { hotel: hotel._id, roomNumber: `${index + 1}01`, type: RoomType.SIMPLE_SINGLE, price: 80, capacity: 1, isAvailable: true },
-        { hotel: hotel._id, roomNumber: `${index + 1}02`, type: RoomType.SIMPLE_DOUBLE, price: 120, capacity: 2, isAvailable: true },
-        { hotel: hotel._id, roomNumber: `${index + 1}03`, type: RoomType.SIMPLE_TRIPLE, price: 180, capacity: 3, isAvailable: true },
-        { hotel: hotel._id, roomNumber: `${index + 1}04`, type: RoomType.SUITE_FAMILY, price: 300, capacity: 5, isAvailable: true },
+        {
+          hotel: hotel._id,
+          roomNumber: `${index + 1}01`,
+          type: RoomType.SIMPLE_SINGLE,
+          price: 80,
+          capacity: 1,
+          isAvailable: true,
+        },
+        {
+          hotel: hotel._id,
+          roomNumber: `${index + 1}02`,
+          type: RoomType.SIMPLE_DOUBLE,
+          price: 120,
+          capacity: 2,
+          isAvailable: true,
+        },
+        {
+          hotel: hotel._id,
+          roomNumber: `${index + 1}03`,
+          type: RoomType.SIMPLE_TRIPLE,
+          price: 180,
+          capacity: 3,
+          isAvailable: true,
+        },
+        {
+          hotel: hotel._id,
+          roomNumber: `${index + 1}04`,
+          type: RoomType.SUITE_FAMILY,
+          price: 300,
+          capacity: 5,
+          isAvailable: true,
+        },
       );
     });
 
@@ -84,6 +113,11 @@ export class SeedService {
       },
     ]);
 
-    return { message: 'Seed executed successfully', hotels: hotels.length, rooms: rooms.length, festivals: 2 };
+    return {
+      message: 'Seed executed successfully',
+      hotels: hotels.length,
+      rooms: rooms.length,
+      festivals: 2,
+    };
   }
 }

@@ -8,7 +8,10 @@ export class SeedController {
   constructor(private readonly seedService: SeedService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Populate the database with initial data (Hotels, Rooms, Festive dates)' })
+  @ApiOperation({
+    summary:
+      'Populate the database with initial data (Hotels, Rooms, Festive dates)',
+  })
   @ApiResponse({ status: 201, description: 'Seeds executed successfully' })
   executeSeed() {
     return this.seedService.runSeed();

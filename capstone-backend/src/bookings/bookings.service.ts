@@ -1,6 +1,12 @@
-import { Injectable, ConflictException, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import {
+  Injectable,
+  ConflictException,
+  BadRequestException,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
+import { InjectModel, InjectConnection } from '@nestjs/mongoose';
+import { Model, Types, Connection, ClientSession } from 'mongoose';
 import { Booking } from './entities/booking.entity';
 import { Room } from '../rooms/entities/room.entity';
 import { CreateSummaryDto } from './dto/create-summary.dto';
@@ -14,6 +20,7 @@ export class BookingsService {
   constructor(
     @InjectModel(Booking.name) private readonly bookingModel: Model<Booking>,
     @InjectModel(Room.name) private readonly roomModel: Model<Room>,
+    @InjectConnection() private readonly connection: Connection,
     private readonly promotionsService: PromotionsService,
   ) {}
 
@@ -24,45 +31,70 @@ export class BookingsService {
    * @returns The created booking document
    */
   async confirmBooking(createBookingDto: CreateBookingDto, userId: string) {
-    const { roomIds, totalPrice, adultCount, childCount, startDate, endDate } = createBookingDto;
+    const { roomIds, totalPrice, adultCount, childCount, startDate, endDate } =
+      createBookingDto;
 
-    const { checkIn, checkOut, promoDetails, rooms } = await this.calculateBookingDetails({
-      startDate,
-      endDate,
-      roomIds,
-      adultCount,
-      childCount: childCount || 0,
-    });
+    const session = await this.connection.startSession();
+    session.startTransaction();
 
-    if (totalPrice !== promoDetails.finalPrice) {
-      throw new BadRequestException(
-        `El precio enviado (${totalPrice}) no coincide con el cálculo del servidor (${promoDetails.finalPrice}).`,
+    try {
+      await this.checkRoomAvailability(roomIds, startDate, endDate, session);
+
+      await this.roomModel.updateMany(
+        { _id: { $in: roomIds.map((id) => new Types.ObjectId(id)) } },
+        { $set: { updatedAt: new Date() } },
+        { session },
       );
+
+      const { checkIn, checkOut, promoDetails, rooms } =
+        await this.calculateBookingDetails({
+          startDate,
+          endDate,
+          roomIds,
+          adultCount,
+          childCount: childCount || 0,
+          session,
+        });
+
+      if (totalPrice !== promoDetails.finalPrice) {
+        throw new BadRequestException(
+          `The provided price (${totalPrice}) does not match the server calculation (${promoDetails.finalPrice}).`,
+        );
+      }
+
+      const newBooking = new this.bookingModel({
+        user: new Types.ObjectId(userId),
+        rooms: roomIds.map((id) => new Types.ObjectId(id)),
+        hotel: (rooms[0].hotel as Hotel)._id,
+        startDate: checkIn,
+        endDate: checkOut,
+        totalPrice: promoDetails.finalPrice,
+        status: BookingStatus.CONFIRMED,
+      });
+
+      const savedBooking = await newBooking.save({ session });
+      await session.commitTransaction();
+      return savedBooking;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      await session.endSession();
     }
-
-    const newBooking = new this.bookingModel({
-      user: new Types.ObjectId(userId),
-      rooms: roomIds.map((id) => new Types.ObjectId(id)),
-      hotel: (rooms[0].hotel as Hotel)._id,
-      startDate: checkIn,
-      endDate: checkOut,
-      totalPrice: promoDetails.finalPrice,
-      status: BookingStatus.CONFIRMED,
-    });
-
-    return await newBooking.save();
   }
 
   async getSummary(createSummaryDto: CreateSummaryDto) {
-    const { startDate, endDate, roomIds, adultCount, childCount } = createSummaryDto;
+    const { startDate, endDate, roomIds, adultCount, childCount } =
+      createSummaryDto;
 
-    const { rooms, nightsCount, baseCost, promoDetails } = await this.calculateBookingDetails({
-      startDate,
-      endDate,
-      roomIds,
-      adultCount,
-      childCount: childCount || 0,
-    });
+    const { rooms, nightsCount, baseCost, promoDetails } =
+      await this.calculateBookingDetails({
+        startDate,
+        endDate,
+        roomIds,
+        adultCount,
+        childCount: childCount || 0,
+      });
 
     return {
       validated: true,
@@ -89,19 +121,24 @@ export class BookingsService {
    * @param userId ID of the user requesting cancellation
    * @returns Success message
    */
-  async cancelBooking(bookingId: string, userId: string){
-    const booking = await this.bookingModel.findOne({ _id: bookingId});
-    if(!booking) throw new NotFoundException('Booking not found');
-    if(booking.user.toString() !== userId){
-      throw new ForbiddenException('You do not have permission to cancel this booking');
+  async cancelBooking(bookingId: string, userId: string) {
+    const booking = await this.bookingModel.findOne({ _id: bookingId });
+    if (!booking) throw new NotFoundException('Booking not found');
+    if (booking.user.toString() !== userId) {
+      throw new ForbiddenException(
+        'You do not have permission to cancel this booking',
+      );
     }
 
     const cancelDate = new Date();
-    const diffInMilliseconds = booking.startDate.getTime() - cancelDate.getTime();
+    const diffInMilliseconds =
+      booking.startDate.getTime() - cancelDate.getTime();
     const diffInDays = Math.ceil(diffInMilliseconds / (1000 * 60 * 60 * 24));
 
-    if(diffInDays < 3){
-      throw new BadRequestException('You can only cancel 3 days before the booking date');
+    if (diffInDays < 3) {
+      throw new BadRequestException(
+        'You can only cancel 3 days before the booking date',
+      );
     }
 
     booking.status = BookingStatus.CANCELLED;
@@ -110,24 +147,25 @@ export class BookingsService {
   }
 
   async getUserBookings(userId: string) {
-  const userObjectId = new Types.ObjectId(userId);
-  const bookings = await this.bookingModel.find({ user: userObjectId })
-    .populate('rooms')
-    .populate('hotel')
-    .exec();
-  return bookings.map(booking => ({
-    id: booking._id,
-    checkIn: booking.startDate,
-    checkOut: booking.endDate,
-    finalCost: booking.totalPrice,
-    status: booking.status,
-    rooms: (booking.rooms as unknown as Room[]).map((room: Room) => ({
-      id: room._id as Types.ObjectId,
-      roomNumber: room.roomNumber,
-      type: room.type
-    }))
-  }));
-}
+    const userObjectId = new Types.ObjectId(userId);
+    const bookings = await this.bookingModel
+      .find({ user: userObjectId })
+      .populate('rooms')
+      .populate('hotel')
+      .exec();
+    return bookings.map((booking) => ({
+      id: booking._id,
+      checkIn: booking.startDate,
+      checkOut: booking.endDate,
+      finalCost: booking.totalPrice,
+      status: booking.status,
+      rooms: (booking.rooms as unknown as Room[]).map((room: Room) => ({
+        id: room._id,
+        roomNumber: room.roomNumber,
+        type: room.type,
+      })),
+    }));
+  }
 
   /**
    * Internal method to calculate booking details, including availability check and promotion application.
@@ -140,16 +178,23 @@ export class BookingsService {
     roomIds: string[];
     adultCount: number;
     childCount: number;
+    session?: ClientSession;
   }) {
-    await this.checkRoomAvailability(data.roomIds, data.startDate, data.endDate);
+    await this.checkRoomAvailability(
+      data.roomIds,
+      data.startDate,
+      data.endDate,
+      data.session,
+    );
 
     const rooms = await this.roomModel
       .find({ _id: { $in: data.roomIds } })
+      .session(data.session || null)
       .populate('hotel')
       .exec();
 
     if (rooms.length !== data.roomIds.length) {
-      throw new NotFoundException('Una o más habitaciones no fueron encontradas');
+      throw new NotFoundException('One or more rooms were not found');
     }
 
     const checkIn = new Date(data.startDate);
@@ -157,7 +202,8 @@ export class BookingsService {
     const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime());
     const nightsCount = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    const baseCost = rooms.reduce((sum, room) => sum + room.price, 0) * nightsCount;
+    const baseCost =
+      rooms.reduce((sum, room) => sum + room.price, 0) * nightsCount;
 
     const hotel = rooms[0].hotel as Hotel;
 
@@ -180,25 +226,27 @@ export class BookingsService {
     };
   }
 
-  async checkRoomAvailability(roomIds: string[], startDate: string, endDate: string): Promise<void> {
+  async checkRoomAvailability(
+    roomIds: string[],
+    startDate: string,
+    endDate: string,
+    session?: ClientSession,
+  ): Promise<void> {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    if (start >= end) {
-      throw new BadRequestException('La fecha de inicio debe ser anterior a la fecha de fin');
-    }
-
-    const overlappingBooking = await this.bookingModel.findOne({
-      status: 'CONFIRMED',
-      rooms: { $in: roomIds.map(id => new Types.ObjectId(id)) },
-      $or: [
-        { startDate: { $lt: end }, endDate: { $gt: start } },
-      ],
-    }).exec();
+    const overlappingBooking = await this.bookingModel
+      .findOne({
+        status: 'CONFIRMED',
+        rooms: { $in: roomIds.map((id) => new Types.ObjectId(id)) },
+        $or: [{ startDate: { $lt: end }, endDate: { $gt: start } }],
+      })
+      .session(session || null)
+      .exec();
 
     if (overlappingBooking) {
       throw new ConflictException(
-        `Una o más habitaciones no están disponibles entre ${startDate} y ${endDate}.`,
+        `One or more rooms are not available between ${startDate} and ${endDate}.`,
       );
     }
   }

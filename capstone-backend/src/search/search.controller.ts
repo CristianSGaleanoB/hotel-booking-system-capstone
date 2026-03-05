@@ -9,9 +9,13 @@ export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Search for available room combinations based on criteria' })
+  @ApiOperation({
+    summary: 'Search for available room combinations based on criteria',
+  })
   @ApiResponse({ status: 200, description: 'List of available options found' })
-  async search(@Query(new ValidationPipe({ transform: true })) searchDto: SearchDto) {
+  async search(
+    @Query(new ValidationPipe({ transform: true })) searchDto: SearchDto,
+  ) {
     return this.searchService.findOptions(searchDto);
   }
 }

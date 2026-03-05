@@ -6,10 +6,12 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   const config = new DocumentBuilder()
     .setTitle('Capstone Booking API')
-    .setDescription('The API description for the Capstone project, including hotels, rooms, and bookings.')
+    .setDescription(
+      'The API description for the Capstone project, including hotels, rooms, and bookings.',
+    )
     .setVersion('1.0')
     .addBearerAuth()
     .build();

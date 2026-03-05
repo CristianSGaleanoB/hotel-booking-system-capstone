@@ -1,5 +1,12 @@
-import { IsArray, IsDateString, IsMongoId, IsNotEmpty, IsNumber } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsMongoId,
+  IsNotEmpty,
+  IsNumber,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsAfter } from 'src/common/decorators/is-after.decorator';
 
 export class CreateBookingDto {
   @ApiProperty({ description: 'The check-in date', example: '2026-05-10' })
@@ -10,9 +17,15 @@ export class CreateBookingDto {
   @ApiProperty({ description: 'The check-out date', example: '2026-05-15' })
   @IsDateString()
   @IsNotEmpty()
+  @IsAfter('startDate', {
+    message: 'The end date must be after the start date',
+  })
   endDate: string;
 
-  @ApiProperty({ description: 'List of room IDs to book', example: ['678fc79a8501168171f6507b'] })
+  @ApiProperty({
+    description: 'List of room IDs to book',
+    example: ['678fc79a8501168171f6507b'],
+  })
   @IsArray()
   @IsMongoId({ each: true })
   roomIds: string[];
@@ -26,7 +39,10 @@ export class CreateBookingDto {
   @IsNumber()
   childCount: number;
 
-  @ApiProperty({ description: 'Total price validated by the server summary', example: 240 })
+  @ApiProperty({
+    description: 'Total price validated by the server summary',
+    example: 240,
+  })
   @IsNumber()
   @IsNotEmpty()
   totalPrice: number;

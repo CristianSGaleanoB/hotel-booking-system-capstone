@@ -10,6 +10,6 @@ import { Hotel, HotelSchema } from './entities/hotel.entity';
   ],
   controllers: [HotelsController],
   providers: [HotelsService],
-  exports: [HotelsService, MongooseModule], 
+  exports: [HotelsService, MongooseModule],
 })
 export class HotelsModule {}

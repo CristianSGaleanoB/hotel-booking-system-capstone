@@ -47,6 +47,4 @@ export class UsersService {
       throw new HttpException(`${error}`, HttpStatus.BAD_REQUEST);
     }
   }
-
 }
-
