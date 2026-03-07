@@ -7,15 +7,15 @@
   <div class="border-t-2 border-gray-200 my-3 min-h-[0.7px] w-full"></div>
 
   <div class="flex flex-col items-center gap-1">
-    <div class="cursor-pointer hover:opacity-80 transition-opacity" (click)="!authService.isLoggedIn() ? login() : null">
+    <div class="cursor-pointer hover:opacity-80 transition-opacity" (click)="!authService.isLoggedIn() ? login() : goToBookings()">
         <fa-icon [icon]="customUser" class="text-accent text-6xl"></fa-icon>
     </div>
 
     <div class="flex flex-col items-center gap-1 mt-1">
-      <button (click)="!authService.isLoggedIn() ? login() : null" 
+      <button (click)="!authService.isLoggedIn() ? login() : goToBookings()" 
               class="text-gray-600 font-medium text-lg transition-colors"
-              [class.hover:text-primary]="!authService.isLoggedIn()">
-        Ingresar
+              class="hover:text-primary">
+        {{ authService.isLoggedIn() ? 'Mis Reservas' : 'Ingresar' }}
       </button>
 
       @if (authService.isLoggedIn()) {

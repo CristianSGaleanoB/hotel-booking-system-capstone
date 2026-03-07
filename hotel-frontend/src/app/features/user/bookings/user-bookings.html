@@ -1,0 +1,57 @@
+<div class="p-6 font-['Outfit','Inter',sans-serif]">
+  <h1 class="text-2xl font-extrabold text-primary mb-6">Reservas</h1>
+
+  @if (isLoading()) {
+    <div class="loading-container text-gray-400">
+      <div class="spinner"></div>
+      <p>Cargando reservas...</p>
+    </div>
+  } @else {
+    @if (bookings().length === 0) {
+      <div class="text-center py-16 text-gray-400">
+        <p>No tienes reservas activas.</p>
+      </div>
+    } @else {
+      <div class="flex flex-col gap-5">
+        @for (booking of bookings(); track booking.id) {
+          <div class="flex items-center gap-5 border border-gray-200 rounded-2xl p-5 bg-white hover:shadow-md transition-shadow">
+
+            <div class="w-[4.5rem] h-[4.5rem] min-w-[4.5rem] bg-primary rounded-xl flex items-center justify-center text-white text-3xl">
+              <fa-icon [icon]="customImage"></fa-icon>
+            </div>
+
+            <div class="min-w-[14rem]">
+              <h3 class="text-base font-bold text-primary m-0">{{ booking.hotelName }}</h3>
+              <div class="flex items-center gap-1 text-xs text-gray-400 mb-1">
+                <fa-icon [icon]="customPin" class="text-[0.7rem]"></fa-icon>
+                <span>{{ booking.city }}</span>
+              </div>
+              <p class="text-sm text-gray-500 m-0">Estado: {{ booking.status === 'CONFIRMED' ? 'Confirmado' : 'Cancelado' }}</p>
+              <p class="text-sm text-gray-500 m-0">Fecha de inicio: {{ booking.checkIn | date:'dd/MM/yyyy' }}</p>
+            </div>
+
+            <div class="flex-1 min-w-[10rem]">
+              <h4 class="text-sm font-semibold text-accent m-0 mb-2">Habitaciones seleccionadas</h4>
+              <ul class="list-disc pl-5 m-0">
+                @for (room of booking.rooms; track room.id) {
+                  <li class="text-sm text-gray-500 mb-0.5">{{ room.type.replace('_', ' ') }} (#{{ room.roomNumber }})</li>
+                }
+              </ul>
+            </div>
+
+            <div class="ml-auto self-center">
+              @if (isCancellable(booking)) {
+                <button (click)="cancelBooking(booking.id)"
+                  class="flex items-center gap-1.5 px-4 py-2 border border-accent rounded-lg bg-white text-accent text-sm cursor-pointer hover:bg-accent/10 transition-colors whitespace-nowrap">
+                  <span class="text-base font-bold leading-none">×</span>
+                  Cancelar
+                </button>
+              }
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

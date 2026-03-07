@@ -29,3 +29,18 @@ export interface BookingSummaryResponse {
 export interface ConfirmBookingRequest extends BookingSummaryRequest {
   totalPrice: number;
 }
+
+export interface UserBooking {
+  id: string;
+  hotelName: string;
+  city: string;
+  checkIn: string;
+  checkOut: string;
+  finalCost: number;
+  status: string;
+  rooms: {
+    id: string;
+    roomNumber: string;
+    type: string;
+  }[];
+}

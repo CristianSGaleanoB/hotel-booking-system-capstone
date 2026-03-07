@@ -24,6 +24,10 @@ export class SideMenuComponent {
     this.router.navigate(['/auth']);
   }
 
+  goToBookings() {
+    this.router.navigate(['/user/bookings']);
+  }
+
   logout() {
     this.authService.logout();
   }

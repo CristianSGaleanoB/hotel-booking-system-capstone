@@ -155,6 +155,8 @@ export class BookingsService {
       .exec();
     return bookings.map((booking) => ({
       id: booking._id,
+      hotelName: (booking.hotel as any)?.name || 'Hotel',
+      city: (booking.hotel as any)?.city || 'City',
       checkIn: booking.startDate,
       checkOut: booking.endDate,
       finalCost: booking.totalPrice,

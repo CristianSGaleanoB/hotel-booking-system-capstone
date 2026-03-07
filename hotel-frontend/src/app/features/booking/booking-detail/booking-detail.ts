@@ -74,6 +74,10 @@ export class BookingDetail implements OnInit {
     }
   }
 
+  goBack() {
+    this.router.navigate(['/hotel', this.hotelId, 'book'])
+  }
+
   async confirmBooking() {
     if (!this.bookingData) return;
     const current = this.summary();
