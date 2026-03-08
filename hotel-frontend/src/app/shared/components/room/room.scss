@@ -1,10 +1,12 @@
 .room-container {
-    border-color: #e5e7eb; 
+    border-color: theme('colors.gray.200');
     transition: all 0.2s ease;
+    container-type: inline-size;
+    container-name: room-card;
     
     &:hover {
         border-color: theme('colors.accent');
-        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     }
 
     &.suggested-room {
@@ -13,6 +15,23 @@
 
     &.selected-room {
         border-color: theme('colors.accent'); 
+    }
+}
+
+@container room-card (max-width: 300px) {
+    .room-container .room-info-top {
+        flex-direction: column;
+        gap: 0.75rem;
+
+        .book-status {
+            width: 100%;
+        }
+    }
+
+    .room-container .room-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
 }
 

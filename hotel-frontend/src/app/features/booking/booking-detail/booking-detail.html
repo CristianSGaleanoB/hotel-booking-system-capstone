@@ -16,14 +16,15 @@
 
       <h2 class="text-center text-3xl font-bold text-accent mb-8">Detalle de la Reserva</h2>
 
-      <div class="flex justify-center mb-8">
-        <div class="border border-accent rounded-lg px-8 py-3 flex items-center gap-6 text-sm text-gray-600">
+      <div class="flex justify-center mb-6 md:mb-8">
+        <div class="border border-accent rounded-lg px-4 py-3 md:px-8 flex flex-col md:flex-row items-center gap-3 md:gap-6 text-sm text-gray-600 w-full md:w-auto">
           <div class="flex items-center gap-2">
             <fa-icon [icon]="planeArrivalIcon" class="text-gray-400"></fa-icon>
             <span class="font-medium text-gray-500">Llegada</span>
             <span class="text-accent font-semibold">{{ info.checkInDate | date:"d 'de' MMMM y" }}</span>
           </div>
-          <div class="h-6 border-l border-accent opacity-50"></div>
+          <div class="hidden md:block h-6 border-l border-accent opacity-50"></div>
+          <div class="md:hidden w-full border-t border-accent opacity-20 my-1"></div>
           <div class="flex items-center gap-2">
             <fa-icon [icon]="planeDepartureIcon" class="text-gray-400"></fa-icon>
             <span class="font-medium text-gray-500">Salida</span>
@@ -90,12 +91,12 @@
         </div>
       }
 
-      <div class="flex justify-end items-center gap-6">
-        <button (click)="cancel()" class="text-gray-600 font-medium hover:text-gray-800 transition-colors">
+      <div class="flex flex-col-reverse md:flex-row justify-end items-center gap-4 md:gap-6">
+        <button (click)="cancel()" class="w-full md:w-auto text-gray-600 font-medium hover:text-gray-800 transition-colors py-2">
           Cancelar
         </button>
         <button (click)="confirmBooking()" [disabled]="isSubmitting()"
-          class="bg-accent hover:bg-opacity-90 transition-colors text-white font-bold py-3 px-6 rounded-lg shadow-md flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed">
+          class="w-full md:w-auto bg-accent hover:bg-opacity-90 transition-colors text-white font-bold py-3 px-6 rounded-lg shadow-md flex justify-center items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed">
           {{ isSubmitting() ? 'Confirmando...' : 'Confirmar Reserva' }}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>

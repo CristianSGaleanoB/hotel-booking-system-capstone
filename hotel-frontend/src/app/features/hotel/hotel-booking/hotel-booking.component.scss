@@ -1,27 +1,37 @@
-$accent-color: #D4AF37; 
-$text-primary: #1A3050; 
-$text-secondary: #555;
-$border-color: #DDD;
-$bg-main: #FFFFFF;
-$bg-section: #FAFAFA;
-$card-border: #E5E7EB;
+$accent-color: theme('colors.accent'); 
+$text-primary: theme('colors.primary'); 
+$text-secondary: theme('colors.gray.600');
+$border-color: theme('colors.gray.300');
+$bg-main: theme('colors.white');
+$bg-section: theme('colors.gray.50');
+$card-border: theme('colors.gray.200');
 
 .booking-page {
-  padding: 3rem;
+  padding: 1.5rem;
+  @media (min-width: 768px) {
+    padding: 3rem;
+  }
   font-family: 'Segoe UI', sans-serif;
   background-color: #fff;
   min-height: 100vh;
   position: relative;
 
   header.booking-header {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 2rem;
-    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    @media (min-width: 1024px) {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+    }
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 
     .hotel-info {
       .title-row h1 {
-        font-size: 2.5rem;
+        font-size: 1.75rem;
+        @media (min-width: 768px) {
+          font-size: 2.5rem;
+        }
         font-weight: 600;
         color: $text-primary;
         margin: 0;
@@ -31,27 +41,30 @@ $card-border: #E5E7EB;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: #888;
-        font-size: 1.1rem;
-        margin: 0.5rem 0 1.5rem;
+        color: theme('colors.gray.400');
+        font-size: 1rem;
+        margin: 0.5rem 0 1rem;
 
-        i { color: #888; }
+        i { color: theme('colors.gray.400'); }
       }
 
       .description-row {
         display: flex;
-        gap: 1.5rem;
+        gap: 1rem;
         align-items: flex-start;
 
         .globe-placeholder {
-          font-size: 4rem;
+          font-size: 3rem;
+          @media (min-width: 768px) {
+            font-size: 4rem;
+          }
           color: $text-primary;
         }
 
         .description-text p {
-          font-size: 0.95rem;
-          line-height: 1.6;
-          color: #444;
+          font-size: 0.9rem;
+          line-height: 1.5;
+          color: theme('colors.gray.700');
           margin: 0;
         }
       }
@@ -61,7 +74,10 @@ $card-border: #E5E7EB;
       background: white;
       border: 1px solid $border-color;
       border-radius: 8px;
-      padding: 1.5rem;
+      padding: 1rem;
+      @media (min-width: 768px) {
+        padding: 1.5rem;
+      }
       box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 
       h3 {
@@ -99,39 +115,46 @@ $card-border: #E5E7EB;
 
   .search-summary {
     display: flex;
-    gap: 2.5rem;
-    margin-bottom: 3rem;
+    flex-direction: column;
+    @media (min-width: 1024px) {
+      flex-direction: row;
+    }
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
 
     .summary-box {
       flex: 1;
 
       h4 {
-        margin: 0 0 0.75rem 0;
+        margin: 0 0 0.5rem 0;
         font-weight: 600;
         color: $text-primary;
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
 
       .box-content {
         border: 1px solid $accent-color;
         border-radius: 8px;
-        padding: 1rem 1.5rem;
+        padding: 0.75rem 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
         background: white;
-        height: 60px;
+        min-height: 60px;
+        height: auto;
+        flex-wrap: wrap;
+        gap: 0.5rem;
       }
 
       &.dates-box .box-content {
         .date-item {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
-          font-size: 0.9rem;
-          color: #777;
+          gap: 0.5rem;
+          font-size: 0.85rem;
+          color: theme('colors.gray.500');
 
-          i { color: #888; }
+          i { color: theme('colors.gray.400'); }
           .date-value {
             color: $accent-color;
             font-weight: 600;
@@ -143,21 +166,9 @@ $card-border: #E5E7EB;
         .guest-input {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
-          font-size: 0.9rem;
-          color: #777;
-
-          input {
-            width: 80px;
-            border: 1px solid $accent-color;
-            border-radius: 4px;
-            padding: 0.5rem;
-            text-align: center;
-            height: 40px;
-            background: #fff;
-            color: $text-primary;
-            font-weight: 600;
-          }
+          gap: 0.5rem;
+          font-size: 0.85rem;
+          color: theme('colors.gray.500');
         }
       }
     }
@@ -165,51 +176,70 @@ $card-border: #E5E7EB;
 
   .rooms-section {
     & > h3 {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: $text-primary;
       margin-bottom: 1rem;
     }
 
     .rooms-container {
-      background: #F9FAFB;
-      border: 1px solid #E5E7EB;
+      background: theme('colors.gray.50');
+      border: 1px solid theme('colors.gray.200');
       border-radius: 12px;
-      padding: 2rem;
+      padding: 1rem;
+      @media (min-width: 768px) {
+        padding: 2rem;
+      }
       max-height: 600px;
       overflow-y: auto;
 
       .rooms-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
+        grid-template-columns: 1fr;
+        @media (min-width: 768px) {
+          grid-template-columns: 1fr 1fr;
+        }
+        gap: 1rem;
+        @media (min-width: 1024px) {
+          gap: 1.5rem;
+        }
       }
     }
   }
 
   .fab-book {
     position: fixed;
-    bottom: 3rem;
-    right: 3rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    @media (min-width: 768px) {
+      bottom: 3rem;
+      right: 3rem;
+    }
     background-color: $accent-color;
     color: white;
     border: none;
     border-radius: 12px;
-    padding: 1rem 1.5rem;
+    padding: 0.75rem 1.25rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 0.5rem;
     box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
     cursor: pointer;
     transition: transform 0.2s;
+    z-index: 40;
+
+    @media (min-width: 768px) {
+      flex-direction: column;
+      padding: 1rem 1.5rem;
+    }
 
     &:hover {
       transform: scale(1.05);
     }
 
-    i { font-size: 1.5rem; }
-    span { font-weight: 600; font-size: 1rem; }
+    i { font-size: 1.25rem; @media (min-width: 768px) { font-size: 1.5rem; } }
+    span { font-weight: 600; font-size: 0.9rem; @media (min-width: 768px) { font-size: 1rem; } }
   }
 }
 
@@ -232,18 +262,18 @@ $card-border: #E5E7EB;
   background: white;
 
   button {
-    background: #f9fafb;
+    background: theme('colors.gray.50');
     border: none;
     padding: 0 0.75rem;
     height: 100%;
     font-weight: bold;
     font-size: 1.2rem;
-    color: #4b5563;
+    color: theme('colors.gray.600');
     cursor: pointer;
     transition: background 0.2s;
     
     &:hover {
-      background: #e5e7eb;
+      background: theme('colors.gray.200');
     }
   }
 
