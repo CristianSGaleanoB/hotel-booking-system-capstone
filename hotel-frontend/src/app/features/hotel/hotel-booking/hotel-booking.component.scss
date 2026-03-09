@@ -1,6 +1,3 @@
-/* SCSS styles migrated to Tailwind utility classes in the HTML template */
-/* Retaining only browser-specific pseudo-element resets that are complex in inline utility classes */
-
 input[type="number"] {
   &::-webkit-inner-spin-button, 
   &::-webkit-outer-spin-button { 
