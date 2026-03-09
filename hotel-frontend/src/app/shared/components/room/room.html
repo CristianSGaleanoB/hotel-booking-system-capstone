@@ -1,11 +1,12 @@
-<div class="room-container bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer relative"
-     [class.selected-room]="isSelected"
-     [class.suggested-room]="isSuggested"
+<div class="room-container bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-accent transition-all cursor-pointer relative"
+     [class.border-accent]="isSelected"
+     [class.border-2]="isSuggested"
+     [class.border-accent]="isSuggested"
      (click)="onSelect()">
     
     <div class="room-header flex flex-col gap-2">
         <div class="room-info-top flex justify-between items-start">
-            <h3 class="room-name text-primary font-bold text-lg m-0">{{ room.type }}</h3>
+            <h3 class="room-name text-primary font-bold text-lg m-0 tracking-tight">{{ room.type }}</h3>
             @if (showSelection) {
                 <button class="book-status flex items-center justify-center gap-1.5 border border-accent rounded-md px-3 py-1 text-sm font-bold transition-all w-[85px] h-[32px] cursor-pointer focus:outline-none"
                      [class.bg-accent]="isSelected"

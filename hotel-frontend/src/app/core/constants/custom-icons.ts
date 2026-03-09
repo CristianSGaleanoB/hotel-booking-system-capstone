@@ -60,9 +60,9 @@ export const customImageIcon: any = {
   ]
 };
 
-export const customBookIcon: any = {
+export const customCalendarIcon: any = {
   prefix: 'fas',
-  iconName: 'book-custom',
+  iconName: 'calendar-custom',
   icon: [
     640,
     640,

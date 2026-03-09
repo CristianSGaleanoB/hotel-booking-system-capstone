@@ -1,64 +1,66 @@
-<div class="booking-page" *ngIf="hotel() as h">
-  <header class="booking-header">
+<div class="p-6 md:p-12 font-sans bg-white min-h-screen relative" *ngIf="hotel() as h">
+  <header class="flex flex-col lg:grid lg:grid-cols-[1fr_300px] gap-6 mb-8">
     <div class="hotel-info">
       <div class="title-row">
-        <h1>{{ h.name }}</h1>
+        <h1 class="text-3xl md:text-5xl font-semibold text-primary m-0">{{ h.name }}</h1>
       </div>
-      <div class="location-row">
-        <fa-icon [icon]="pinIcon" class="location-icon"></fa-icon>
+      <div class="flex items-center gap-2 text-gray-400 text-base my-2">
+        <fa-icon [icon]="pinIcon" class="text-gray-400"></fa-icon>
         <span>{{ h.city }}</span>
       </div>
-      <div class="description-row">
-        <div class="globe-placeholder">
-          <fa-icon [icon]="globeIcon" class="globe-icon"></fa-icon>
+      <div class="flex gap-4 items-start">
+        <div class="text-5xl md:text-6xl text-primary">
+          <fa-icon [icon]="globeIcon"></fa-icon>
         </div>
-        <div class="description-text">
+        <div class="text-sm leading-relaxed text-gray-700 m-0">
           <p><strong>Descripción:</strong> {{ h.description }}</p>
         </div>
       </div>
     </div>
 
-    <div class="promotions-box">
-      <h3>Promociones Disponibles</h3>
-      <ul>
-        <li *ngFor="let promo of activePromotions">{{ promo.name }}</li>
+    <div class="bg-white border border-gray-300 rounded-lg p-4 md:p-6 shadow-[0_4px_6px_rgba(0,0,0,0.05)]">
+      <h3 class="text-lg font-semibold text-primary mt-0 mb-4">Promociones Disponibles</h3>
+      <ul class="list-none p-0 m-0">
+        <li *ngFor="let promo of activePromotions" class="relative pl-5 text-sm mb-1 text-gray-600 before:content-['•'] before:absolute before:left-0 before:text-accent before:text-xl before:leading-none">
+          {{ promo.name }}
+        </li>
       </ul>
     </div>
   </header>
 
-  <section class="search-summary">
-    <div class="summary-box dates-box">
-      <h4>Fechas</h4>
-      <div class="box-content">
-        <div class="date-item">
-          <fa-icon [icon]="planeArrivalIcon" class="plane-icon"></fa-icon>
+  <section class="flex flex-col lg:flex-row gap-6 mb-10">
+    <div class="flex-1">
+      <h4 class="m-0 mb-2 font-semibold text-primary text-base">Fechas</h4>
+      <div class="border border-accent rounded-lg py-3 px-4 flex justify-between items-center bg-white min-h-[60px] h-auto flex-wrap gap-2">
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+          <fa-icon [icon]="planeArrivalIcon" class="text-gray-400"></fa-icon>
           <span>Llegada</span>
           <input type="date" class="date-input focus:outline-none" [value]="startDate()" (change)="startDate.set($any($event.target).value)" />
         </div>
-        <div class="date-item">
-          <fa-icon [icon]="planeDepartureIcon" class="plane-icon"></fa-icon>
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+          <fa-icon [icon]="planeDepartureIcon" class="text-gray-400"></fa-icon>
           <span>Salida</span>
           <input type="date" class="date-input focus:outline-none" [value]="endDate()" (change)="endDate.set($any($event.target).value)" />
         </div>
       </div>
     </div>
 
-    <div class="summary-box guests-box">
-      <h4>Cantidad de huéspedes</h4>
-      <div class="box-content guest-controls">
-        <div class="guest-input group-input">
-          <div class="stepper">
-            <button (click)="updateGuests('adults', false)">-</button>
-            <input type="number" [value]="adults()" readonly>
-            <button (click)="updateGuests('adults', true)">+</button>
+    <div class="flex-1">
+      <h4 class="m-0 mb-2 font-semibold text-primary text-base">Cantidad de huéspedes</h4>
+      <div class="border border-accent rounded-lg py-3 px-4 flex justify-between items-center bg-white min-h-[60px] h-auto flex-wrap gap-2">
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+          <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-10 bg-white">
+            <button class="bg-gray-50 border-none px-3 h-full font-bold text-lg text-gray-600 cursor-pointer hover:bg-gray-200 transition-colors" (click)="updateGuests('adults', false)">-</button>
+            <input class="w-10 text-center border-none border-l border-r border-gray-300 bg-transparent h-full font-semibold text-primary p-0 appearance-none" type="number" [value]="adults()" readonly>
+            <button class="bg-gray-50 border-none px-3 h-full font-bold text-lg text-gray-600 cursor-pointer hover:bg-gray-200 transition-colors" (click)="updateGuests('adults', true)">+</button>
           </div>
           <span>Adultos</span>
         </div>
-        <div class="guest-input group-input">
-          <div class="stepper">
-            <button (click)="updateGuests('children', false)">-</button>
-            <input type="number" [value]="children()" readonly>
-            <button (click)="updateGuests('children', true)">+</button>
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+          <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-10 bg-white">
+            <button class="bg-gray-50 border-none px-3 h-full font-bold text-lg text-gray-600 cursor-pointer hover:bg-gray-200 transition-colors" (click)="updateGuests('children', false)">-</button>
+            <input class="w-10 text-center border-none border-l border-r border-gray-300 bg-transparent h-full font-semibold text-primary p-0 appearance-none" type="number" [value]="children()" readonly>
+            <button class="bg-gray-50 border-none px-3 h-full font-bold text-lg text-gray-600 cursor-pointer hover:bg-gray-200 transition-colors" (click)="updateGuests('children', true)">+</button>
           </div>
           <span>Niños</span>
         </div>
@@ -66,10 +68,10 @@
     </div>
   </section>
 
-  <section class="rooms-section">
-    <h3>Habitaciones disponibles</h3>
-    <div class="rooms-container">
-      <div class="rooms-grid">
+  <section class="">
+    <h3 class="text-lg font-semibold text-primary mb-4">Habitaciones disponibles</h3>
+    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 md:p-8 max-h-[600px] overflow-y-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
         @for (room of suggestedRooms; track room._id) {
             <app-room 
                 [room]="room" 
@@ -94,13 +96,13 @@
   </section>
 
   @if (canBook) {
-    <button class="fab-book" (click)="goToBookingDetail()">
-      <fa-icon [icon]="bookIcon"></fa-icon>
-      <span>Book</span>
+    <button class="fixed bottom-6 right-6 md:bottom-12 md:right-12 bg-accent text-white border-none rounded-xl py-3 px-5 flex flex-row md:flex-col items-center gap-2 shadow-[0_4px_12px_rgba(212,175,55,0.4)] cursor-pointer hover:scale-105 transition-transform z-40" (click)="goToBookingDetail()">
+      <fa-icon [icon]="calendarIcon" class="text-xl md:text-2xl"></fa-icon>
+      <span class="font-semibold text-sm md:text-base">Book</span>
     </button>
   }
 </div>
 
-<div class="loading-state" *ngIf="!hotel()">
+<div class="flex justify-center items-center h-[400px] text-gray-600" *ngIf="!hotel()">
   <p>Cargando información del hotel...</p>
 </div>

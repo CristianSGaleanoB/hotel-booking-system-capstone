@@ -5,7 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BookingService } from '../../../core/services/booking.service';
 import { BookingSummaryRequest, BookingSummaryResponse } from '../../../core/interfaces/booking.interface';
 import { ApiError } from '../../../core/interfaces/api-error.interface';
-import { customArrivalIcon, customDepartureIcon, customBookIcon } from '../../../core/constants/custom-icons';
+import { customArrivalIcon, customDepartureIcon, customCalendarIcon } from '../../../core/constants/custom-icons';
 
 @Component({
   selector: 'app-booking-detail',
@@ -29,7 +29,7 @@ export class BookingDetail implements OnInit {
 
   planeArrivalIcon = customArrivalIcon;
   planeDepartureIcon = customDepartureIcon;
-  calendarIcon = customBookIcon;
+  calendarIcon = customCalendarIcon;
 
   constructor() {
     const state = history.state as { bookingData: any };

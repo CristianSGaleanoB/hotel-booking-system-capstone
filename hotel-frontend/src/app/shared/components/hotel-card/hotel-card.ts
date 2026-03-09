@@ -6,7 +6,7 @@ import { RoomSuggestion } from '../../../core/interfaces/roomSuggestion.interfac
 import { Room as RoomInterface } from '../../../core/interfaces/room.interface';
 import { RoomComponent } from '../room/room';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { customPinIcon, customImageIcon, customBookIcon } from '../../../core/constants/custom-icons';
+import { customPinIcon, customImageIcon, customCalendarIcon } from '../../../core/constants/custom-icons';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -21,7 +21,7 @@ export class HotelCard {
   
   pinIcon = customPinIcon; 
   imageIcon = customImageIcon;
-  bookIcon = customBookIcon;
+  calendarIcon = customCalendarIcon;
   
   get roomSuggestions(): (RoomSuggestion | RoomInterface)[] {
     if ('rooms' in this.data && this.data.rooms) {

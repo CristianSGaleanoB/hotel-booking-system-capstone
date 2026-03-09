@@ -9,7 +9,7 @@ import { RoomService } from '../../../core/services/room.service';
 import { Router } from '@angular/router';
 import { Hotel } from '../../../core/interfaces/hotel.interface';
 import { Room } from '../../../core/interfaces/room.interface';
-import { customGlobeIcon, customArrivalIcon, customDepartureIcon, customPinIcon, customCapacityIcon, customBookIcon } from '../../../core/constants/custom-icons';
+import { customGlobeIcon, customArrivalIcon, customDepartureIcon, customPinIcon, customCapacityIcon, customCalendarIcon } from '../../../core/constants/custom-icons';
 import { RoomComponent } from '../../../shared/components/room/room';
 
 @Component({
@@ -80,7 +80,7 @@ export class HotelBookingComponent implements OnInit {
   planeDepartureIcon = customDepartureIcon;
   pinIcon = customPinIcon;
   capacityIcon = customCapacityIcon;
-  bookIcon = customBookIcon;
+  calendarIcon = customCalendarIcon;
 
   async ngOnInit() {
     this.hotelId = this.route.snapshot.paramMap.get('id');
