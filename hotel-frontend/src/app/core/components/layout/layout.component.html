@@ -1,22 +1,22 @@
-<div class="h-screen w-full bg-gray-50 flex flex-col md:grid md:grid-cols-[8.75rem_1fr] transition-all duration-300 overflow-hidden">
+<div class="layout h-screen w-full bg-gray-50 flex flex-col md:grid md:grid-cols-[8.75rem_1fr] transition-all duration-300 overflow-hidden">
     
-    <header class="md:hidden flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200 z-30 shadow-sm">
-        <div class="flex items-center gap-2">
-            <span class="text-primary font-bold text-xl tracking-tight">Traveler</span>
+    <header class="layout__mobile-header md:hidden flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200 z-30 shadow-sm">
+        <div class="layout__logo">
+            <span class="layout__logo-text text-primary font-bold text-xl tracking-tight">Traveler</span>
         </div>
-        <button (click)="toggleSidebar()" class="text-primary text-2xl p-2 focus:outline-none">
-            <fa-icon [icon]="isSidebarOpen() ? faTimes : faBars"></fa-icon>
+        <button (click)="toggleSidebar()" class="layout__toggle-btn text-primary text-2xl p-2 focus:outline-none">
+            <fa-icon [icon]="isSidebarOpen() ? faTimes : faBars" class="layout__toggle-icon"></fa-icon>
         </button>
     </header>
 
     <aside [class.hidden]="!isSidebarOpen()" 
-           class="h-full bg-white shadow-xl z-20 md:block fixed inset-0 md:relative md:inset-auto"
+           class="layout__sidebar h-full bg-white shadow-xl z-20 md:block fixed inset-0 md:relative md:inset-auto"
            [class.block]="isSidebarOpen()">
-        <app-side-menu (click)="isSidebarOpen() && toggleSidebar()"></app-side-menu>
+        <app-side-menu (click)="isSidebarOpen() && toggleSidebar()" class="layout__side-menu"></app-side-menu>
     </aside>
 
-    <main class="flex-1 min-h-0 flex flex-col relative w-full overflow-hidden">
-        <div class="flex-1 overflow-y-auto scroll-smooth">
+    <main class="layout__main flex-1 min-h-0 flex flex-col relative w-full overflow-hidden">
+        <div class="layout__content-wrapper flex-1 overflow-y-auto scroll-smooth">
             <router-outlet></router-outlet>
         </div>
     </main>

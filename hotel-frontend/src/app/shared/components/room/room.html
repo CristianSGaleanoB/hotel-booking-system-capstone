@@ -1,37 +1,33 @@
-<div class="room-container bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-accent transition-all cursor-pointer relative"
-     [class.border-accent]="isSelected"
-     [class.border-2]="isSuggested"
-     [class.border-accent]="isSuggested"
+<div class="room bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-accent transition-all cursor-pointer relative"
+     [class.room--selected]="isSelected"
+     [class.room--suggested]="isSuggested"
      (click)="onSelect()">
     
-    <div class="room-header flex flex-col gap-2">
-        <div class="room-info-top flex justify-between items-start">
-            <h3 class="room-name text-primary font-bold text-lg m-0 tracking-tight">{{ room.type }}</h3>
+    <div class="room__header flex flex-col gap-2">
+        <div class="room__title-container flex justify-between items-start">
+            <h3 class="room__name text-primary font-bold text-lg m-0 tracking-tight">{{ room.type }}</h3>
             @if (showSelection) {
-                <button class="book-status flex items-center justify-center gap-1.5 border border-accent rounded-md px-3 py-1 text-sm font-bold transition-all w-[85px] h-[32px] cursor-pointer focus:outline-none"
-                     [class.bg-accent]="isSelected"
-                     [class.text-white]="isSelected"
-                     [class.bg-transparent]="!isSelected"
-                     [class.text-accent]="!isSelected"
+                <button class="room__status-btn flex items-center justify-center gap-1.5 border border-accent rounded-md px-3 py-1 text-sm font-bold transition-all w-[85px] h-[32px] cursor-pointer focus:outline-none"
+                     [class.room__status-btn--selected]="isSelected"
                      (click)="onSelect(); $event.stopPropagation()">
                     @if (isSelected) {
-                        <fa-icon [icon]="checkIcon"></fa-icon>
+                        <fa-icon [icon]="checkIcon" class="room__check-icon"></fa-icon>
                     }
-                    <span>Book</span>
+                    <span class="room__status-text">Book</span>
                 </button>
             }
         </div>
 
-        <div class="room-meta flex items-center gap-4 mt-1 text-primary font-semibold text-sm">
-            <span class="capacity flex items-center gap-1.5">
-                <fa-icon [icon]="capacityIcon" class="text-xs"></fa-icon>
+        <div class="room__meta flex items-center gap-4 mt-1 text-primary font-semibold text-sm">
+            <span class="room__capacity flex items-center gap-1.5">
+                <fa-icon [icon]="capacityIcon" class="room__capacity-icon text-xs"></fa-icon>
                 Capacidad: {{ room.capacity }}
             </span>
-            <span class="price">{{ room.price }}$</span>
+            <span class="room__price text-primary font-bold">{{ room.price }}$</span>
         </div>
     </div>
 
-    <p class="room-description text-gray-500 text-sm leading-relaxed mt-3 m-0 line-clamp-2">
+    <p class="room__description text-gray-500 text-sm leading-relaxed mt-3 m-0 line-clamp-2">
         {{ room.description || 'Descripción: Lorem Ipsum is simply dummy text of the printing and typesetting industry.' }}
     </p>
 </div>

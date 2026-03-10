@@ -8,6 +8,7 @@ import { LoginCredentials } from '../../../../../core/interfaces/login-credentia
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login-form.component.html',
+  styleUrl: './login-form.component.scss'
 })
 export class LoginFormComponent {
   isLoading = input<boolean>(false);

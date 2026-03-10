@@ -1,16 +1,17 @@
-<div class="flex items-center justify-center min-h-[calc(100vh-120px)]">
+<div class="login flex items-center justify-center min-h-[calc(100vh-120px)]">
   <div
-    class="bg-white p-6 md:p-12 rounded-lg shadow-[0_10px_40px_-15px_rgb(0_0_0_/_0.1)] border border-gray-100 w-full max-w-sm"
+    class="login__card bg-white p-6 md:p-12 rounded-lg shadow-[0_10px_40px_-15px_rgb(0_0_0_/_0.1)] border border-gray-100 w-full max-w-sm"
   >
-    <h1 class="text-4xl font-semibold text-accent text-center mb-10">Login</h1>
+    <h1 class="login__title text-4xl font-semibold text-accent text-center mb-10">Login</h1>
 
     @if (errorMessage()) {
-      <div class="mb-6 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm rounded animate-pulse">
+      <div class="login__error mb-6 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm rounded animate-pulse">
         {{ errorMessage() }}
       </div>
     }
 
     <app-login-form 
+      class="login__form"
       [isLoading]="isLoading()" 
       (loginSubmit)="onLogin($event)"
     />

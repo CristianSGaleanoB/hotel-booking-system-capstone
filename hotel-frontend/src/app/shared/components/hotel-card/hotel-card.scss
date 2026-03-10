@@ -1,18 +1,18 @@
-.hotel-card-wrapper {
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-    .no-scrollbar {
+.hotel-card {
+    &__rooms-list {
+        &::-webkit-scrollbar {
+            display: none;
+        }
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-}
 
-.book-button {
-    &:hover {
-        transform: translateY(-1px);
-    }
-    &:active {
-        transform: scale(0.97);
+    &__book-btn {
+        &:hover {
+            transform: translateY(-1px);
+        }
+        &:active {
+            transform: scale(0.97);
+        }
     }
 }

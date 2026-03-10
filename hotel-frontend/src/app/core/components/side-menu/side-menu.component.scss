@@ -1,0 +1,36 @@
+.side-menu {
+  &__mobile-header {
+    border-color: theme('colors.gray.200');
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    gap: 0.5rem;
+  }
+
+  &__link {
+    display: flex;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    color: theme('colors.gray.600');
+    transition: all 0.2s;
+
+    &--active {
+      background-color: theme('colors.primary');
+      color: white;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+
+    &:hover:not(&--active) {
+      background-color: theme('colors.gray.100');
+    }
+  }
+
+  &__logout-btn {
+    &:hover {
+      background-color: theme('colors.red.50');
+    }
+  }
+}

@@ -11,8 +11,8 @@ import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
   standalone: true,
   imports: [CommonModule, SideMenuComponent, RouterOutlet, FontAwesomeModule],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
-})
+    styleUrl: './layout.component.scss'
+  })
 export class LayoutComponent {
   authService = inject(AuthService);
   isSidebarOpen = signal(false);

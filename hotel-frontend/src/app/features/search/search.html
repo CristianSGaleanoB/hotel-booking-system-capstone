@@ -1,38 +1,39 @@
-<div class="search-page-layout flex flex-col lg:grid lg:grid-cols-[20rem_1fr] h-full w-full overflow-hidden">
-    <aside class="search-sidebar-container bg-white border-b lg:border-b-0 lg:border-x border-gray-200 overflow-y-auto overflow-x-hidden min-w-0 p-4 md:p-6">
+<div class="search-page flex flex-col lg:grid lg:grid-cols-[20rem_1fr] h-full w-full overflow-hidden">
+    <aside class="search-page__sidebar bg-white border-b lg:border-b-0 lg:border-x border-gray-200 overflow-y-auto overflow-x-hidden min-w-0 p-4 md:p-6">
         <app-search-form 
+            class="search-page__form"
             [cities]="getUniqueCities()"
             (search)="handleSearch($event)">
         </app-search-form>
     </aside>
 
-    <main class="content-area bg-gray-50 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-6 md:px-8 md:py-8">
+    <main class="search-page__main bg-gray-50 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-6 md:px-8 md:py-8">
         @if (errorMessage()) {
-            <div class="bg-red-50 border border-red-200 text-red-700 px-1rem py-0.75rem rounded-lg mb-1rem text-sm">
+            <div class="search-page__error bg-red-50 border border-red-200 text-red-700 px-1rem py-0.75rem rounded-lg mb-1rem text-sm">
                 {{ errorMessage() }}
             </div>
         }
 
         @if (searchService.isLoading() || hotelService.isLoading()) {
-            <div class="flex justify-center p-3rem">
-                <div class="animate-spin rounded-full h-4rem w-4rem border-t-4 border-b-4 border-accent"></div>
+            <div class="search-page__loader-container flex justify-center p-3rem">
+                <div class="search-page__loader animate-spin rounded-full h-4rem w-4rem border-t-4 border-b-4 border-accent"></div>
             </div>
         } @else {
             @if (hasSearched()) {
                 @if (searchService.searchResults().length > 0) {
-                    <app-hotel-list [data]="searchService.searchResults()"></app-hotel-list>
+                    <app-hotel-list class="search-page__list" [data]="searchService.searchResults()"></app-hotel-list>
                 } @else {
-                    <div class="no-results-state flex flex-col items-center justify-center p-4rem text-center bg-white rounded-2xl shadow-sm border border-gray-100">
-                        <div class="w-5rem h-5rem bg-gray-50 rounded-full flex items-center justify-center mb-1.5rem">
-                            <i class="fas fa-search text-gray-300 text-2xl"></i>
+                    <div class="search-page__no-results flex flex-col items-center justify-center p-4rem text-center bg-white rounded-2xl shadow-sm border border-gray-100">
+                        <div class="search-page__no-results-icon-container w-5rem h-5rem bg-gray-50 rounded-full flex items-center justify-center mb-1.5rem">
+                            <i class="search-page__no-results-icon fas fa-search text-gray-300 text-2xl"></i>
                         </div>
-                        <h3 class="text-primary font-bold text-xl mb-0.5rem">No se encontraron opciones</h3>
-                        <p class="text-gray-500 max-w-[20rem]">Lo sentimos, no hay habitaciones disponibles con estos criterios. Intenta con otras fechas o ubicaciones.</p>
-                        <button (click)="hasSearched.set(false)" class="mt-2rem text-accent font-bold hover:underline">Ver catálogo completo</button>
+                        <h3 class="search-page__no-results-title text-primary font-bold text-xl mb-0.5rem">No se encontraron opciones</h3>
+                        <p class="search-page__no-results-text text-gray-500 max-w-[20rem]">Lo sentimos, no hay habitaciones disponibles con estos criterios. Intenta con otras fechas o ubicaciones.</p>
+                        <button (click)="hasSearched.set(false)" class="search-page__no-results-btn mt-2rem text-accent font-bold hover:underline">Ver catálogo completo</button>
                     </div>
                 }
             } @else {
-                <app-hotel-list [data]="hotelService.hotels()"></app-hotel-list>
+                <app-hotel-list class="search-page__list" [data]="hotelService.hotels()"></app-hotel-list>
             }
         }
     </main>

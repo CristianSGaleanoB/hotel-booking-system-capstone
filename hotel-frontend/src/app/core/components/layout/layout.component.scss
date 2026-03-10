@@ -1,0 +1,15 @@
+.layout {
+
+    &__logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    &__toggle-btn {
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+}

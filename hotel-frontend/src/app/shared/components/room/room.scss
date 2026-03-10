@@ -1,21 +1,42 @@
-.room-container {
+.room {
     container-type: inline-size;
     container-name: room-card;
+
+    &--selected {
+        border-color: theme('colors.accent');
+    }
+
+    &--suggested {
+        border-width: 2px;
+        border-color: theme('colors.accent');
+    }
+
+    &__status-btn {
+        background-color: transparent;
+        color: theme('colors.accent');
+
+        &--selected {
+            background-color: theme('colors.accent');
+            color: white;
+        }
+    }
 }
 
 @container room-card (max-width: 300px) {
-    .room-container .room-info-top {
-        flex-direction: column;
-        gap: 0.75rem;
+    .room {
+        &__title-container {
+            flex-direction: column;
+            gap: 0.75rem;
 
-        .book-status {
-            width: 100%;
+            .room__status-btn {
+                width: 100%;
+            }
         }
-    }
 
-    .room-container .room-meta {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
+        &__meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
     }
 }

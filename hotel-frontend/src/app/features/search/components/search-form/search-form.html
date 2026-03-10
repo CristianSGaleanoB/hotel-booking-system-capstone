@@ -1,61 +1,61 @@
-<div class="buscador-sidebar flex flex-col h-full">
-    <div class="header w-full flex flex-col items-center py-2 mb-4">
-        <h2 class="text-2xl font-semibold text-primary tracking-tight">Buscador</h2>
-        <div class="w-full flex justify-end mt-1">
-            <button (click)="clearFilters()" type="button" class="text-accent font-medium text-[10px] hover:underline flex items-center gap-0.5">
+<div class="search-form flex flex-col h-full">
+    <div class="search-form__header w-full flex flex-col items-center py-2 mb-4">
+        <h2 class="search-form__title text-2xl font-semibold text-primary tracking-tight">Buscador</h2>
+        <div class="search-form__clear-container w-full flex justify-end mt-1">
+            <button (click)="clearFilters()" type="button" class="search-form__clear-btn text-accent font-medium text-[10px] hover:underline flex items-center gap-0.5">
                 ✕ clear filters
             </button>
         </div>
     </div>
 
-    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="flex flex-col flex-1 gap-5 md:gap-7">
-        <div class="dates-box border-2 border-accent/20 rounded-xl p-3 md:p-4 flex flex-col gap-3 md:gap-4">
-            <div class="flex items-center gap-3 relative">
-                <fa-icon [icon]="arrivalIcon" class="text-gray-400 text-sm md:text-base"></fa-icon>
-                <span class="text-gray-500 font-normal text-xs md:text-sm">Llegada</span>
-                <span class="text-accent font-medium text-xs md:text-sm ml-auto">{{ searchForm.get('checkIn')?.value || 'Seleccionar fecha' }}</span>
-                <input type="date" formControlName="checkIn" [min]="today" class="absolute inset-0 opacity-0 cursor-pointer">
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search-form__form flex flex-col flex-1 gap-5 md:gap-7">
+        <div class="search-form__dates border-2 border-accent/20 rounded-xl p-3 md:p-4 flex flex-col gap-3 md:gap-4">
+            <div class="search-form__date-field flex items-center gap-3 relative">
+                <fa-icon [icon]="arrivalIcon" class="search-form__date-icon text-gray-400 text-sm md:text-base"></fa-icon>
+                <span class="search-form__date-label text-gray-500 font-normal text-xs md:text-sm">Llegada</span>
+                <span class="search-form__date-value text-accent font-medium text-xs md:text-sm ml-auto">{{ searchForm.get('checkIn')?.value || 'Seleccionar fecha' }}</span>
+                <input type="date" formControlName="checkIn" [min]="today" class="search-form__date-input absolute inset-0 opacity-0 cursor-pointer">
             </div>
-            <div class="flex items-center gap-3 relative">
-                <fa-icon [icon]="departureIcon" class="text-gray-400 text-sm md:text-base"></fa-icon>
-                <span class="text-gray-500 font-normal text-xs md:text-sm">Salida</span>
-                <span class="text-accent font-medium text-xs md:text-sm ml-auto">{{ searchForm.get('checkOut')?.value || 'Seleccionar fecha' }}</span>
-                <input type="date" formControlName="checkOut" [min]="today" class="absolute inset-0 opacity-0 cursor-pointer">
+            <div class="search-form__date-field flex items-center gap-3 relative">
+                <fa-icon [icon]="departureIcon" class="search-form__date-icon text-gray-400 text-sm md:text-base"></fa-icon>
+                <span class="search-form__date-label text-gray-500 font-normal text-xs md:text-sm">Salida</span>
+                <span class="search-form__date-value text-accent font-medium text-xs md:text-sm ml-auto">{{ searchForm.get('checkOut')?.value || 'Seleccionar fecha' }}</span>
+                <input type="date" formControlName="checkOut" [min]="today" class="search-form__date-input absolute inset-0 opacity-0 cursor-pointer">
             </div>
         </div>
 
-        <div class="guests-input flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
-            <label class="text-gray-700 font-normal text-sm leading-tight max-w-full sm:max-w-[14rem]">
+        <div class="search-form__guests flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+            <label class="search-form__guests-label text-gray-700 font-normal text-sm leading-tight max-w-full sm:max-w-[14rem]">
                 Buscar habitación por cantidad de personas
             </label>
             <input type="number" formControlName="guests" min="1" 
-                   class="w-full sm:w-14 bg-white p-2 sm:p-0.375rem rounded-md border border-gray-300 text-center font-medium text-sm shadow-sm outline-none focus:border-accent">
+                   class="search-form__guests-input w-full sm:w-14 bg-white p-2 sm:p-0.375rem rounded-md border border-gray-300 text-center font-medium text-sm shadow-sm outline-none focus:border-accent">
         </div>
 
-        <div class="price-range flex flex-col gap-3">
-            <div class="flex justify-between items-center">
-                <label class="text-gray-700 font-normal text-sm">Precio Máximo</label>
-                <span class="text-accent font-bold text-sm">{{ searchForm.get('maxPrice')?.value }}$</span>
+        <div class="search-form__price flex flex-col gap-3">
+            <div class="search-form__price-header flex justify-between items-center">
+                <label class="search-form__price-label text-gray-700 font-normal text-sm">Precio Máximo</label>
+                <span class="search-form__price-value text-accent font-bold text-sm">{{ searchForm.get('maxPrice')?.value }}$</span>
             </div>
-            <div class="relative px-1 h-8 flex items-center">
+            <div class="search-form__price-range relative px-1 h-8 flex items-center">
                 <input type="range" formControlName="maxPrice" min="0" max="1000" 
-                       class="w-full cursor-pointer h-2 bg-gray-200 rounded-lg appearance-none accent-accent">
+                       class="search-form__price-range-input w-full cursor-pointer h-2 bg-gray-200 rounded-lg appearance-none accent-accent">
             </div>
-            <div class="flex justify-between text-[0.625rem] font-normal text-gray-500 px-1">
+            <div class="search-form__price-limits flex justify-between text-[0.625rem] font-normal text-gray-500 px-1">
                 <span>0$</span>
                 <span>1000$</span>
             </div>
         </div>
 
-        <div class="locations-list flex flex-col gap-3 flex-1 overflow-hidden">
-            <h3 class="text-primary font-bold text-base">Ubicaciones Disponibles</h3>
-            <div class="flex flex-col gap-2 overflow-y-auto pr-1">
+        <div class="search-form__locations flex flex-col gap-3 flex-1 overflow-hidden">
+            <h3 class="search-form__locations-title text-primary font-bold text-base">Ubicaciones Disponibles</h3>
+            <div class="search-form__locations-list flex flex-col gap-2 overflow-y-auto pr-1">
                 @for (city of cities; track city) {
-                    <div class="flex items-center gap-3 cursor-pointer group" (click)="searchForm.patchValue({city: city}); onSubmit()">
-                        <div class="w-4 h-4 rounded-full border-2 border-accent transition-colors shrink-0"
-                             [class.bg-white]="searchForm.get('city')?.value !== city"
-                             [class.bg-accent]="searchForm.get('city')?.value === city"></div>
-                        <span class="text-gray-600 font-normal text-sm group-hover:text-primary transition-colors truncate">{{ city }}</span>
+                    <div class="search-form__location-item flex items-center gap-3 cursor-pointer group" (click)="searchForm.patchValue({city: city}); onSubmit()">
+                        <div class="search-form__location-radio w-4 h-4 rounded-full border-2 border-accent transition-colors shrink-0"
+                             [class.search-form__location-radio--active]="searchForm.get('city')?.value === city"
+                             [ngClass]="searchForm.get('city')?.value === city ? 'bg-accent' : 'bg-white'"></div>
+                        <span class="search-form__location-name text-gray-600 font-normal text-sm group-hover:text-primary transition-colors truncate">{{ city }}</span>
                     </div>
                 }
             </div>

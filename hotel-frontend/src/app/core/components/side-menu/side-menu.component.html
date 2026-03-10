@@ -1,25 +1,24 @@
-<nav class="flex flex-col h-full bg-white border-r border-gray-200 py-2 items-center">
-  <div class="flex flex-col items-center gap-0 cursor-pointer hover:opacity-80 transition-opacity" routerLink="/">
-    <fa-icon [icon]="customHotel" class="text-primary text-7xl"></fa-icon>
-    <span class="text-black font-bold text-2xl tracking-tight -mt-1">Traveler</span>
+<nav class="side-menu flex flex-col h-full bg-white border-r border-gray-200 py-2 items-center">
+  <div class="side-menu__brand flex flex-col items-center gap-0 cursor-pointer hover:opacity-80 transition-opacity" routerLink="/">
+    <fa-icon [icon]="customHotel" class="side-menu__brand-icon text-primary text-7xl"></fa-icon>
+    <span class="side-menu__brand-name text-black font-bold text-2xl tracking-tight -mt-1">Traveler</span>
   </div>
 
-  <div class="border-t-2 border-gray-200 my-3 min-h-[0.7px] w-full"></div>
+  <div class="side-menu__divider border-t-2 border-gray-200 my-3 min-h-[0.7px] w-full"></div>
 
-  <div class="flex flex-col items-center gap-0">
-    <div class="cursor-pointer hover:opacity-80 transition-opacity" (click)="!authService.isLoggedIn() ? login() : goToBookings()">
-        <fa-icon [icon]="customUser" class="text-accent text-6xl"></fa-icon>
+  <div class="side-menu__user-section flex flex-col items-center gap-0">
+    <div class="side-menu__user-avatar cursor-pointer hover:opacity-80 transition-opacity" (click)="!authService.isLoggedIn() ? login() : goToBookings()">
+        <fa-icon [icon]="customUser" class="side-menu__user-icon text-accent text-6xl"></fa-icon>
     </div>
 
-    <div class="flex flex-col items-center gap-1">
+    <div class="side-menu__user-info flex flex-col items-center gap-1">
       <button (click)="!authService.isLoggedIn() ? login() : goToBookings()" 
-              class="text-gray-600 font-medium text-lg transition-colors"
-              class="hover:text-primary">
+              class="side-menu__user-name text-gray-600 font-medium text-lg transition-colors hover:text-primary">
         {{ authService.isLoggedIn() ? 'User' : 'Ingresar' }}
       </button>
 
       @if (authService.isLoggedIn()) {
-        <button (click)="logout()" class="text-[10px] text-red-500 hover:text-red-700 font-semibold px-1.5 py-0.5 bg-red-50 rounded-md">
+        <button (click)="logout()" class="side-menu__logout-btn text-[10px] text-red-500 hover:text-red-700 font-semibold px-1.5 py-0.5 bg-red-50 rounded-md">
           Salir
         </button>
       }

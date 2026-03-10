@@ -1,9 +1,9 @@
-.buscador-sidebar {
-    h2 {
+.search-form {
+    &__title {
         letter-spacing: -0.02em;
     }
     
-    input[type="date"]::-webkit-calendar-picker-indicator {
+    &__date-input::-webkit-calendar-picker-indicator {
         position: absolute;
         top: 0;
         left: 0;
@@ -15,7 +15,12 @@
         background: transparent;
     }
 
-    input[type="range"] {
+    &__main {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    &__price-range-input {
         -webkit-appearance: none;
         appearance: none;
         width: 100%;
@@ -71,13 +76,13 @@
             box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
         }
     }
-}
 
-.locations-list {
-    & > div::-webkit-scrollbar {
+    scrollbar-color: theme('colors.accent') transparent;
+
+    &::-webkit-scrollbar {
         width: 2px;
     }
-    & > div::-webkit-scrollbar-thumb {
+    &::-webkit-scrollbar-thumb {
         background: theme('colors.accent');
         border-radius: 10px;
     }

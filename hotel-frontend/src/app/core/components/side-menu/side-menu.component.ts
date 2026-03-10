@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [RouterLink, FontAwesomeModule],
   templateUrl: './side-menu.component.html',
-  styleUrl: './side-menu.component.css'
+  styleUrl: './side-menu.component.scss'
 })
 export class SideMenuComponent {
   authService = inject(AuthService);
